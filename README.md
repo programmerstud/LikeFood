@@ -5,9 +5,12 @@
 
 ## Участники
 - programmerstud - Верещагина Марина, 3 группа
+- LizaOleynik - Олейник Елизавета, 3 группа
+- vladimir-zheltukhin - Желтухин Владимир, 3 группа
 
 ## Навигация по документации
 
 
 ## Ссылки
 [Trello Board](https://trello.com/b/2sgQHScX/likefood) <br>
+[Miro](https://miro.com/app/board/o9J_kvU0_Lk=/) <br>
