@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h1>Добавить новый аккаунт автора:</h1>
+<form method="POST">
+    {{ form.csrf_token }}
+            <p>{{ form.login }}</p>
+            <input type="submit" value="Отправить">
+                {{ content|safe }}
+</form>
+            <a href="/">Отмена</a>
+{% endblock %}

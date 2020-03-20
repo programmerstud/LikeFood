@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h1>Регистрация</h1>
+<form method="POST">
+    {{ form.csrf_token }}
+        <p>{{ form.login }}</p>
+        <p>{{ form.password }}</p>
+        <p>{{ form.password_repeat }}</p>
+        <input type="submit" value="Зарегистрироваться">
+</form>
+
+        <td><a href="/">Авторизоваться</a></td>
+{% endblock %}
