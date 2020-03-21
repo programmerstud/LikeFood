@@ -2,11 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LikeFood</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Главная страница</title>
+    <link href="https://fonts.googleapis.com/css?family=Ledger&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename='style.css')}}">
 </head>
 <body>
-            <a href="/top_authors">Топ-авторов</a>
-            <p><td><a href="/сhange_password">Сменить пароль</a></td></p>
-            <p><td><a href="/logout">Выйти</a></td></p>
+    <header>
+    <img class="background" src="../static/images/Header.png"/>
+        <nav>
+            <ul class="nav1">
+                <li><a href="/сhange_password">Сменить пароль</a></li>
+                <li><a href="/logout">Выйти</a></li>
+            </ul>
+        </nav>
+        <div class="header">
+            <div class="container">
+                <img class="logo_img" src="../static/images/Logo.svg" width="325"
+    height="93"/>
+            <nav>
+                <ul class="nav2">
+                    <li style="float: left;"><a href="">Главная</a></li>
+                    <li style="float: right;"><a href="/top_authors">ТОП-авторов</a></li>
+                </ul>
+            </nav>
+            </div>
+        </div>
+    </header>
 </body>
 </html>
