@@ -44,6 +44,13 @@ header{
     width: 960px;
 }
 
+.container-center{
+    position:relative;
+    margin:0 auto;
+    width: 580px;
+    text-align: center;
+}
+
 .nav1{
     position: relative;
     display: flex;
@@ -139,4 +146,70 @@ header{
 }
 .logo_img{
     padding-top: 36px;
+}
+
+.form-control{
+    margin-top: 10px;
+    width: 580px;
+    height:50px;
+    background-color: #fff;
+    color: #C4C4C4;
+    font-size: 20px;
+    padding-left: 30px;
+    border-radius: 10px;
+    border: 2px solid #C4C4C4;
+}
+
+.form-control:focus{
+    border: 2px solid #C4C4C4;
+    transition: all .5s;
+}
+
+.form-control:not(:focus){
+    border: 2px solid #C4C4C4;
+    transition: all .5s;
+}
+
+.form-bt{
+    margin-top: 10px;
+    width: 260px;
+    height:50px;
+    background-color: #1A1A1A;
+    color: #fff;
+    font-size: 20px;
+    text-align:center;
+    border-radius: 10px;
+    border: 2px solid #C4C4C4;
+    transition: all .5s;
+}
+
+.form-bt:hover{
+border: 2px solid #1A1A1A;
+transition: all .5s;
+}
+
+.form-a-white{
+    text-decoration: none;
+    margin-top: 30px;
+    color:#A3A3A3;
+    font-size: 20px;
+    transition: color 0.2s ease;
+}
+
+.form-a-black{
+    text-decoration: none;
+    margin-top: 30px;
+    color:#A3A3A3;
+    font-size: 20px;
+    transition: color 0.2s ease;
+}
+
+.form-a-white:hover{
+    text-decoration: underline;
+    color: #fff;
+}
+
+.form-a-black:hover{
+    text-decoration: underline;
+    color: #1A1A1A;
 }

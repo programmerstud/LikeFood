@@ -1,13 +1,32 @@
-{% extends "layout.html" %}
-{% block body %}
-  <h1>Регистрация</h1>
-<form method="POST">
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Ledger&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename='style.css')}}">
+    <script>
+    window.onload = function(){
+        document.getElementById("f").value = "";
+    }
+    </script>
+</head>
+<body>
+<img class="background" src="../static/images/Background.png"/>
+<div class="container-center" style="padding-top: 70px;">
+  <h1 style="font-size: 48px; color: #fff; margin-bottom: 50px;">Регистрация</h1>
+    <form method="POST">
     {{ form.csrf_token }}
-        <p>{{ form.login }}</p>
-        <p>{{ form.password }}</p>
-        <p>{{ form.password_repeat }}</p>
-        <input type="submit" value="Зарегистрироваться">
-</form>
-
-        <td><a href="/">Авторизоваться</a></td>
-{% endblock %}
+        {{ form.login(id="f", class="form-control", placeholder="Введите логин") }}<br>
+        {{ form.password(id="f", class="form-control", placeholder="Введите пароль") }}<br>
+        {{ form.password_repeat(id="f", class="form-control", placeholder="Введите пароль повторно") }}<br>
+    <input class="form-bt" type="submit" value="Зарегистрироваться"><br>
+    </form><br>
+        <a class="form-a-white" href="/">Авторизоваться</a>
+</div>
+</body>
+</html>
