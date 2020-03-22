@@ -23,7 +23,7 @@
 
     {% with messages = get_flashed_messages() %}
   {% if messages %}
-    <ul class=flashes>
+    <ul class=flashes style="color: #fff; margin-top: -30px; margin-bottom: 20px;">
     {% for message in messages %}
       <li>{{ message }}</li>
     {% endfor %}
@@ -35,7 +35,7 @@
         {{ form.password(id="f", class="form-control", placeholder="Введите пароль") }}<br>
     <input class="form-bt" type="submit" value="Войти"><br>
     </form><br>
-        <a class="form-a-white" href="/register">Зарегистрироваться</a>
+        <a class="form-a" href="/register">Зарегистрироваться</a>
 </div>
 </body>
 </html>

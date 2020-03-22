@@ -20,13 +20,22 @@
 <div class="container-center" style="padding-top: 70px;">
   <h1 style="font-size: 48px; color: #fff; margin-bottom: 50px;">Регистрация</h1>
     <form method="POST">
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes style="color: #fff; margin-top: -30px; margin-bottom: 20px;">
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
     {{ form.csrf_token }}
         {{ form.login(id="f", class="form-control", placeholder="Введите логин") }}<br>
         {{ form.password(id="f", class="form-control", placeholder="Введите пароль") }}<br>
         {{ form.password_repeat(id="f", class="form-control", placeholder="Введите пароль повторно") }}<br>
     <input class="form-bt" type="submit" value="Зарегистрироваться"><br>
     </form><br>
-        <a class="form-a-white" href="/">Авторизоваться</a>
+        <a class="form-a" href="/">Авторизоваться</a>
 </div>
 </body>
 </html>
