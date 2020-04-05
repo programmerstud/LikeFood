@@ -12,7 +12,7 @@ import random
 import string
 
 from logic import app, db
-from logic.models import User, user_schema
+from logic.models import User, Recipe, Category, user_like_recipe, user_schema
 
 
 class LoginForm(FlaskForm):
@@ -176,12 +176,27 @@ def allRecipePageAuthor():
 
 @login_required
 def topPage():
-    return render_template('top_page.html')
+    rait = show_top_raiting()
+    return render_template('top_page.html', raiting = rait)
 
 
 @login_required
 def topPageAdmin():
-    return render_template('top_page_for_admin.html')
+    rait = show_top_raiting()
+    return render_template('top_page_for_admin.html', raiting = rait)
+
+def show_top_raiting():
+    authors = User.query.filter_by(role='Author').all()
+    raiting = {}
+    for author in authors:
+        count = 0
+        recipes = Recipe.query.filter_by(author_id=author.id).all()
+        for recipe in recipes:
+            count += db.session.query(User).join(User.user_like_recipe).filter(Recipe.id==recipe.id).count()
+        raiting[author.login]=count
+    list_raiting = list(raiting.items())
+    list_raiting.sort(key=lambda i: i[1], reverse=True)
+    return list_raiting
 
 
 @app.route('/logout')
