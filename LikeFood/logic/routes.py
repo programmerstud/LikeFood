@@ -37,12 +37,17 @@ class AddAuthorForm(FlaskForm):
 
 
 @app.route('/', methods=['GET', 'POST'])
-def mainPage():
+@app.route('/index/', methods=['GET', 'POST'])
+@app.route('/<int:page>', methods = ['GET', 'POST'])
+def mainPage(page = 1):
     if current_user.is_authenticated:
-        if current_user.role == "Reader" or current_user.role == "Admin":
-            return allRecipePage()
-        else:
-            return allRecipePageAuthor()
+        per_page = 1
+        is_author = False;
+        if current_user.is_authenticated:
+            if current_user.role == "Author":
+                is_author = "True"
+        recipes = Recipe.query.order_by(Recipe.id).paginate(page, per_page, error_out=False)
+        return render_template('index.html', recipes=recipes, is_author=is_author)
     else:
         return login()
 
@@ -54,6 +59,7 @@ def raitingPage():
         return topPage()
     else:
         return topPageAdmin()
+
 
 
 def login():
@@ -164,15 +170,19 @@ def gen(length=8, method=["lowercase", "uppercase", "digits", "punctuation"]):
     random.shuffle(pwd)
     return ''.join(pwd)
 
+'''
+@app.route('/<int:page>',methods = ['GET', 'POST'])
 @login_required
-def allRecipePage():
-    return render_template('index.html')
+def allRecipePage(page = 1):
+    per_page = 1
+    recipes = Recipe.query.order_by(Recipe.id).paginate(page,per_page,error_out=False)
+    return render_template('index.html',recipes=recipes)
 
 
 @login_required
 def allRecipePageAuthor():
     return render_template('index_for_authors.html')
-
+'''
 
 @login_required
 def topPage():

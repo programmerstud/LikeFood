@@ -28,7 +28,12 @@
             <input class="form-bt-f" type="submit" value="Поиск рецептов">
         </div>
     </form>
+{% for recipe in recipes.items %}
+        <p>
+            {{ recipe.title }} image: <b>{{ recipe.image }}</b>
+        </p>
+        {% endfor %}
+        {% if recipes.has_prev %}<a href="{{ url_for('mainPage', page=recipes.prev_num)}}">&lt; Предыдущая страница </a>{% else %}{% endif %}
+        {% if recipes.has_next %}<a href="{{ url_for('mainPage', page=recipes.next_num)}}"> Следующая страница &gt;</a>{% else %}{% endif %}
 </div>
 </div>
-</body>
-</html>
