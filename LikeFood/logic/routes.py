@@ -2,7 +2,7 @@
 # coding: utf-8
 from flask import render_template, request, flash, abort, redirect, url_for
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Email
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, login_required, logout_user, current_user
@@ -31,6 +31,13 @@ class ChangePasswordForm(FlaskForm):
     new_password = PasswordField('new_password', validators=[DataRequired()])
     new_password_repeat = PasswordField('new_password_repeat', validators=[DataRequired()])
 
+""""""
+class AddRecipeForm(FlaskForm):
+    title = StringField('title', validators=[DataRequired()])
+    category_id = StringField('category_id', validators=[DataRequired()])
+    image = StringField('image', validators=[DataRequired()])
+    recipe_text = TextAreaField('recipe_text', validators=[DataRequired()])
+""""""
 
 class AddAuthorForm(FlaskForm):
     login = StringField('login', validators=[DataRequired()])
@@ -43,9 +50,8 @@ def mainPage(page = 1):
     if current_user.is_authenticated:
         per_page = 1
         is_author = False;
-        if current_user.is_authenticated:
-            if current_user.role == "Author":
-                is_author = "True"
+        if current_user.role == "Author":
+            is_author = "True"
         recipes = Recipe.query.order_by(Recipe.id).paginate(page, per_page, error_out=False)
         return render_template('index.html', recipes=recipes, is_author=is_author)
     else:
@@ -59,6 +65,15 @@ def raitingPage():
         return topPage()
     else:
         return topPageAdmin()
+
+
+@app.route('/new_recipe', methods=['GET', 'POST'])
+@login_required
+def newRecipePage():
+    if current_user.role == "Author":
+        return createRecipePage()
+    else:
+        return mainPage()
 
 
 
@@ -207,6 +222,28 @@ def show_top_raiting():
     list_raiting = list(raiting.items())
     list_raiting.sort(key=lambda i: i[1], reverse=True)
     return list_raiting
+
+
+def createRecipePage():
+    form = AddRecipeForm()
+    title = form.title.data
+    category_id = form.category_id.data
+    image = form.image.data
+    recipe_text = form.recipe_text.data
+    if form.validate_on_submit():
+        if not (title or category_id or image or recipe_text):
+            flash('Пожалуйста, заполните все поля!')
+        else:
+            author_id = current_user.id
+            new_recipe = Recipe(title=title, category_id=category_id, image=image, recipe_text=recipe_text,author_id=author_id )
+            db.session.add(new_recipe)
+            db.session.commit()
+
+        return redirect(url_for('mainPage'))
+    else:
+        if title:
+            flash("Данный логин не допустим!")
+    return render_template('new_recipe_page.html', form=form)
 
 
 @app.route('/logout')
