@@ -1,39 +1,14 @@
 {% include "layout.html" %}
 <div class="container">
-<div class="filter">
-    <form method="POST">
-        <img src="../static/images/search.png" class="search-img">
-        <input type="text" class="form-filter" placeholder="Поиск по названию">
-        <img src="../static/images/search.png" class="search-img">
-        <input type="text" class="form-filter" placeholder="Поиск по автору">
-        <div class="filter-l">
-            <div class="dropdown">
-            <button class="dropbtn">Категории</button>
-                <div class="dropdown-content">
-                    <input type="checkbox" class="custom-checkbox" id="ch_1"><label for="ch_1">Первые блюда</label>
-                    <input type="checkbox" class="custom-checkbox" id="ch_2"><label for="ch_2">Вторые блюда</label>
-                    <input type="checkbox" class="custom-checkbox" id="ch_3"><label for="ch_3">Салаты</label>
-                    <input type="checkbox" class="custom-checkbox" id="ch_4"><label for="ch_4">Закуски</label>
-                    <input type="checkbox" class="custom-checkbox" id="ch_5"><label for="ch_5">Десерты</label>
-                </div>
-            </div>
-            <div class="dropdown">
-            <button class="dropbtn">Сортировка</button>
-                <div class="dropdown-content">
-                    <input type="radio" name="radio_list" class="custom-radio" id="r_1" checked><label for="r_1">Без сортировки</label>
-                    <input type="radio" name="radio_list" class="custom-radio" id="r_2"><label for="r_2">По рейтингу</label>
-                    <input type="radio" name="radio_list" class="custom-radio" id="r_3"><label for="r_3">По новизне</label>
-                </div>
-            </div>
-            <input class="form-bt-f" type="submit" value="Поиск рецептов">
-        </div>
-    </form>
-{% for recipe in recipes.items %}
+{% include "filter.html" %}
+        <div class="main_container">
+        {% for recipe in recipes.items %}
         <p>
             {{ recipe.title }} image: <b>{{ recipe.image }}</b>
         </p>
         {% endfor %}
         {% if recipes.has_prev %}<a href="{{ url_for('mainPage', page=recipes.prev_num)}}">&lt; Предыдущая страница </a>{% else %}{% endif %}
         {% if recipes.has_next %}<a href="{{ url_for('mainPage', page=recipes.next_num)}}"> Следующая страница &gt;</a>{% else %}{% endif %}
+        </div>
 </div>
-</div>
+{% include "footer.html" %}
