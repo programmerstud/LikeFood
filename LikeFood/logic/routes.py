@@ -48,7 +48,7 @@ class AddAuthorForm(FlaskForm):
 @app.route('/<int:page>', methods = ['GET', 'POST'])
 def mainPage(page = 1):
     if current_user.is_authenticated:
-        per_page = 1
+        per_page = 2
         is_author = False;
         if current_user.role == "Author":
             is_author = "True"
@@ -64,7 +64,7 @@ def raitingPage():
     if current_user.role == "Reader" or current_user.role == "Author":
         return topPage()
     else:
-        return topPageAdmin()
+        return topPage()
 
 
 @app.route('/new_recipe', methods=['GET', 'POST'])
@@ -201,14 +201,12 @@ def allRecipePageAuthor():
 
 @login_required
 def topPage():
+    is_admin = False;
+    if current_user.role == "Admin":
+        is_admin = "True"
     rait = show_top_raiting()
-    return render_template('top_page.html', raiting = rait)
+    return render_template('top_page.html', raiting = rait, is_admin=is_admin)
 
-
-@login_required
-def topPageAdmin():
-    rait = show_top_raiting()
-    return render_template('top_page_for_admin.html', raiting = rait)
 
 def show_top_raiting():
     authors = User.query.filter_by(role='Author').all()
