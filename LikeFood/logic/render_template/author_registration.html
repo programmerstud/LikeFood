@@ -4,7 +4,7 @@
   <p style="font-size: 30px; margin-bottom: 25px;">Добавить новый аккаунт автора:</p>
 <form method="POST">
     {{ form.csrf_token }}
-            <p>{{ form.login(style="width: 800px; color: #1A1A1A; border: 2px solid #1A1A1A; margin-bottom: 20px;", class="form-control", placeholder="Логин автора") }}</p>
+            <p>{{ form.login( style="width: 800px; color: #1A1A1A; border: 2px solid #1A1A1A; margin-bottom: 20px;", class="form-control", placeholder="Логин автора") }}</p>
             <div><input class="form-bt" type="submit" value="Отправить">
                 <a class="form-a" style="margin-left: 30px; color:#1A1A1A;" href="/top_authors">Отмена</a>
             </div>
