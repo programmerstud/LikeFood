@@ -5,11 +5,6 @@
         <input type="text" class="form-filter" placeholder="Поиск по названию">
         <img src="../static/images/search.png" class="search-img">
         <input type="text" class="form-filter" placeholder="Поиск по автору">
-        {% if is_author %}
-         <input type="checkbox" class="custom-checkbox-b" id="ch"><label style="font-size: 18px;" for="ch">Мои рецепты</label>
-        <form action="/new_recipe">   <!-- почему-то не переходит на страницу((((-->
-            <input class="form-bt-f" style="font-size: 30px; float: right; width: 100px;" type="submit" value="+"></form>
-        {% endif %}
         <div class="filter-l">
             <div class="dropdown">
             <button class="dropbtn">Категории</button>
