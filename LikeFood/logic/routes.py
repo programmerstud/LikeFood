@@ -153,7 +153,7 @@ def changePassword():
 def addAuthor():
     form = AddAuthorForm()
     login = form.login.data
-    str = ""
+    str = ""; l = ""; p = ""
     if form.validate_on_submit():
         if not (login):
             flash('Пожалуйста, заполните поле логина!')
@@ -164,8 +164,10 @@ def addAuthor():
             new_user = User(login=login, password=password,role="Author")
             db.session.add(new_user)
             db.session.commit()
-            str += "Информация для авторизации: \n Логин: " + login + "\n Пароль: " + password
-    return render_template('author_registration.html', form = form, content = str)
+            str += "Информация для авторизации:"
+            l += "Логин: " + login
+            p += "Пароль: " + password
+    return render_template('author_registration.html', form = form, content = str, login = l, password = p)
 
 
 def gen(length=8, method=["lowercase", "uppercase", "digits", "punctuation"]):
@@ -244,11 +246,14 @@ def createRecipePage():
     return render_template('new_recipe_page.html', form=form)
 
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('mainPage'))
+
+
 
 if __name__=="__main__":
     app.run(debug=True)
