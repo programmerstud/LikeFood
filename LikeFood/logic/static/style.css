@@ -283,6 +283,12 @@ header{
     text-align:center;
     border-radius: 10px;
     border: none;
+    transition: all .2s ease;
+}
+
+.form-bt-f:hover {
+  background-color: #A3A3A3;
+  transition: all .2s ease;
 }
 
 .search-img{
@@ -386,3 +392,14 @@ header{
     background-color: #1A1A1A;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
   }
+
+  .table_authors{
+    font-size: 20px;
+  }
+
+  .table_authors {width: 960px; border-collapse: collapse;}
+  .table_authors td {padding: 12px 12px;}
+  .table_authors thead tr {border-top: 1px solid #A3A3A3;}
+  .table_authors tr {border-bottom: 1px solid #A3A3A3;}
+
+
