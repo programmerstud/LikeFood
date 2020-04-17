@@ -31,13 +31,11 @@ class ChangePasswordForm(FlaskForm):
     new_password = PasswordField('new_password', validators=[DataRequired()])
     new_password_repeat = PasswordField('new_password_repeat', validators=[DataRequired()])
 
-""""""
 class AddRecipeForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
     category_id = StringField('category_id', validators=[DataRequired()])
     image = StringField('image', validators=[DataRequired()])
     recipe_text = TextAreaField('recipe_text', validators=[DataRequired()])
-""""""
 
 class AddAuthorForm(FlaskForm):
     login = StringField('login', validators=[DataRequired()])
@@ -46,10 +44,10 @@ class AddAuthorForm(FlaskForm):
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index/', methods=['GET', 'POST'])
 @app.route('/<int:page>', methods = ['GET', 'POST'])
-def mainPage(page = 1):
+def main_page(page = 1):
     if current_user.is_authenticated:
         per_page = 2
-        is_author = False;
+        is_author = False
         if current_user.role == "Author":
             is_author = "True"
         recipes = Recipe.query.order_by(Recipe.id).paginate(page, per_page, error_out=False)
@@ -60,20 +58,20 @@ def mainPage(page = 1):
 
 @app.route('/top_authors', methods=['GET', 'POST'])
 @login_required
-def raitingPage():
+def raiting_page():
     if current_user.role == "Reader" or current_user.role == "Author":
-        return topPage()
+        return top_page()
     else:
-        return topPage()
+        return top_page()
 
 
 @app.route('/new_recipe', methods=['GET', 'POST'])
 @login_required
-def newRecipePage():
+def new_recipe_page():
     if current_user.role == "Author":
-        return createRecipePage()
+        return create_recipe_page()
     else:
-        return mainPage()
+        return main_page()
 
 
 
@@ -86,7 +84,7 @@ def login():
             user = User.query.filter_by(login=login).first()
             if user and user.password == password:
                 login_user(user)
-                return redirect(url_for('mainPage'))
+                return redirect(url_for('main_page'))
             else:
                 flash('Логин или пароль введены неверно')
         else:
@@ -117,7 +115,7 @@ def register():
                     db.session.add(new_user)
                     db.session.commit()
 
-                    return redirect(url_for('mainPage'))
+                    return redirect(url_for('main_page'))
     else:
         if login:
             flash("Данный логин не допустим!")
@@ -126,7 +124,7 @@ def register():
 
 @app.route('/сhange_password', methods=['GET', 'POST'])
 @login_required
-def changePassword():
+def change_password():
     form = ChangePasswordForm()
     old_password = form.old_password.data
     new_password = form.new_password.data
@@ -150,7 +148,7 @@ def changePassword():
 
 @app.route('/author_registration', methods=['GET', 'POST'])
 @login_required
-def addAuthor():
+def add_author():
     form = AddAuthorForm()
     login = form.login.data
     str = ""; l = ""; p = ""
@@ -202,8 +200,8 @@ def allRecipePageAuthor():
 '''
 
 @login_required
-def topPage():
-    is_admin = False;
+def top_page():
+    is_admin = False
     if current_user.role == "Admin":
         is_admin = "True"
     rait = show_top_raiting()
@@ -224,7 +222,7 @@ def show_top_raiting():
     return list_raiting
 
 
-def createRecipePage():
+def create_recipe_page():
     form = AddRecipeForm()
     title = form.title.data
     category_id = form.category_id.data
@@ -239,7 +237,7 @@ def createRecipePage():
             db.session.add(new_recipe)
             db.session.commit()
 
-        return redirect(url_for('mainPage'))
+        return redirect(url_for('main_page'))
     else:
         if title:
             flash("Данный логин не допустим!")
@@ -251,7 +249,7 @@ def createRecipePage():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('mainPage'))
+    return redirect(url_for('main_page'))
 
 
 
