@@ -1,26 +1,10 @@
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Регистрация</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Ledger&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename='style.css')}}">
-    <script>
-    window.onload = function(){
-        document.getElementById("f").value = "";
-    }
-    </script>
-</head>
-<body>
-<img class="background" src="../static/images/Background.png"/>
-<div class="container-center" style="padding-top: 70px;">
-  <h1 style="font-size: 48px; color: #fff; margin-bottom: 50px;">Новый рецепт</h1>
-    <form method="POST">
-    {% with messages = get_flashed_messages() %}
+{% include "header.html" %}
+
+<div class="container" style="margin-bottom: 30px;">
+    <div class="main_container">
+  <p style="font-size: 30px; margin-bottom: 25px;">Добавить новый рецепт:</p>
+<form enctype="multipart/form-data" method="POST">
+        {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes style="color: #fff; margin-top: -30px; margin-bottom: 20px;">
     {% for message in messages %}
@@ -30,12 +14,23 @@
   {% endif %}
 {% endwith %}
     {{ form.csrf_token }}
-        {{ form.title(id="f", class="form-control", placeholder="Название") }}<br>
-        {{ form.category_id(id="f", class="form-control", placeholder="Категория_ид") }}<br>
-        {{ form.image(id="f", class="form-control", placeholder="Картинка") }}<br>
-        {{ form.recipe_text(id="f", class="form-control", placeholder="Текст") }}<br>
-    <input class="form-bt" type="submit" value="Создать рецепт"><br>
-    </form><br>
+        {{ form.title(style="width: 800px; color: #1A1A1A; border: 2px solid #1A1A1A; margin-bottom: 20px;", class="form-control", placeholder="Название") }}<br>
+        <input type = "file" name = "image" accept="image/*,image/jpeg">
+        <p style="margin: 20px 0 30px; font-size: 22px;">Выберите категорию:</p>
+         <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_1" checked><label style="font-size: 18px;" for="r_1">Первые блюда</label></p>
+         <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_2"><label style="font-size: 18px;"  for="r_2">Вторые блюда</label></p>
+         <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_3"><label style="font-size: 18px;"  for="r_3">Салаты</label></p>
+         <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_4"><label style="font-size: 18px;"  for="r_4">Закуски</label></p>
+         <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_5"><label style="font-size: 18px;"  for="r_5">Десерты</label></p>
+        <!--{{ form.category_id(class="form-control", placeholder="Категория_ид") }}<br>
+        {{ form.image(class="form-control", placeholder="Картинка") }}<br>-->
+        {{ form.recipe_text(style="width: 800px; color: #1A1A1A; border: 2px solid #1A1A1A; margin: 30px 0 20px; padding-top: 20px; height: 250px;", class="form-control", placeholder="Ингредиенты, пошаговое описание рецепта, ссылки на внешние источники.") }}<br>
+
+            <div><input class="form-bt" type="submit" value="Добавить рецепт">
+                <a class="form-a" style="margin-left: 30px; color:#1A1A1A;" href="/top_authors">Отмена</a>
+            </div>
+</form>
+    </div>
 </div>
-</body>
-</html>
+
+{% include "footer.html" %}

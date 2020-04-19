@@ -8,11 +8,16 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, login_required, logout_user, current_user
 from wtforms.fields import SubmitField
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask import send_from_directory
+import os
 import random
 import string
-
+from werkzeug.utils import secure_filename
 from logic import app, db
 from logic.models import User, Recipe, Category, user_like_recipe, user_schema
+
+UPLOAD_FOLDER = '/static/images'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
 class LoginForm(FlaskForm):
@@ -40,7 +45,26 @@ class AddRecipeForm(FlaskForm):
 class AddAuthorForm(FlaskForm):
     login = StringField('login', validators=[DataRequired()])
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+'''@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
+    return
+
+@app.route('/static/images/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
+'''
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index/', methods=['GET', 'POST'])
 @app.route('/<int:page>', methods = ['GET', 'POST'])
