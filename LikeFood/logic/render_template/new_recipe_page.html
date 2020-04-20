@@ -15,15 +15,15 @@
 {% endwith %}
     {{ form.csrf_token }}
         {{ form.title(style="width: 800px; color: #1A1A1A; border: 2px solid #1A1A1A; margin-bottom: 20px;", class="form-control", placeholder="Название") }}<br>
-        <input type = "file" name = "image" accept="image/*,image/jpeg">
+        <input type = "file" accept="image/*,image/jpeg">
         <p style="margin: 20px 0 30px; font-size: 22px;">Выберите категорию:</p>
          <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_1" checked><label style="font-size: 18px;" for="r_1">Первые блюда</label></p>
          <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_2"><label style="font-size: 18px;"  for="r_2">Вторые блюда</label></p>
          <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_3"><label style="font-size: 18px;"  for="r_3">Салаты</label></p>
          <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_4"><label style="font-size: 18px;"  for="r_4">Закуски</label></p>
          <p style="margin-top: 20px;"><input type="radio" name="radio_list" class="custom-radio" id="r_5"><label style="font-size: 18px;"  for="r_5">Десерты</label></p>
-        <!--{{ form.category_id(class="form-control", placeholder="Категория_ид") }}<br>
-        {{ form.image(class="form-control", placeholder="Картинка") }}<br>-->
+        {{ form.category_id(class="form-control", placeholder="Категория_ид") }}<br>
+        {{ form.image(class="form-control", placeholder="Картинка") }}<br>
         {{ form.recipe_text(style="width: 800px; color: #1A1A1A; border: 2px solid #1A1A1A; margin: 30px 0 20px; padding-top: 20px; height: 250px;", class="form-control", placeholder="Ингредиенты, пошаговое описание рецепта, ссылки на внешние источники.") }}<br>
 
             <div><input class="form-bt" type="submit" value="Добавить рецепт">

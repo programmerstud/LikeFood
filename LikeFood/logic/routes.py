@@ -59,7 +59,6 @@ def upload_file():
             return redirect(url_for('uploaded_file',
                                     filename=filename))
     return
-
 @app.route('/static/images/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
@@ -70,12 +69,21 @@ def uploaded_file(filename):
 @app.route('/<int:page>', methods = ['GET', 'POST'])
 def main_page(page = 1):
     if current_user.is_authenticated:
-        per_page = 2
+        per_page = 9
         is_author = False
         if current_user.role == "Author":
             is_author = "True"
-        recipes = Recipe.query.order_by(Recipe.id).paginate(page, per_page, error_out=False)
-        return render_template('index.html', recipes=recipes, is_author=is_author)
+        recipes = Recipe.query.order_by(Recipe.id)
+        recipes_p = recipes.paginate(page, per_page, error_out=False)
+        names_authors = [recipes.count()]
+        '''likes = [recipes.count()]'''
+        i = 1
+        for recipe in recipes:
+            user = User.query.filter_by(id=recipe.author_id).first()
+            names_authors.insert(i, user.login)
+            '''likes.insert(i, user_like_recipe.query.filter(Recipe.id == recipe.id).count())'''
+            i += 1
+        return render_template('index.html', recipes=recipes_p, names_authors=names_authors, is_author=is_author)
     else:
         return login()
 
@@ -216,8 +224,6 @@ def allRecipePage(page = 1):
     per_page = 1
     recipes = Recipe.query.order_by(Recipe.id).paginate(page,per_page,error_out=False)
     return render_template('index.html',recipes=recipes)
-
-
 @login_required
 def allRecipePageAuthor():
     return render_template('index_for_authors.html')
@@ -257,7 +263,7 @@ def create_recipe_page():
             flash('Пожалуйста, заполните все поля!')
         else:
             author_id = current_user.id
-            new_recipe = Recipe(title=title, category_id=category_id, image=image, recipe_text=recipe_text,author_id=author_id )
+            new_recipe = Recipe(title=title, category_id=category_id, image=image, recipe_text=recipe_text,author_id=author_id)
             db.session.add(new_recipe)
             db.session.commit()
 

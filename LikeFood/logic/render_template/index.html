@@ -1,14 +1,21 @@
 {% include "layout.html" %}
 <div class="container">
 {% include "filter.html" %}
-        <div class="main_container">
+        <div class="main_container" style="width: 1000px;">
         {% for recipe in recipes.items %}
-        <p>
-            {{ recipe.title }} image: <b>{{ recipe.image }}</b>
-        </p>
-        {% endfor %}
-        {% if recipes.has_prev %}<a href="{{ url_for('main_page', page=recipes.prev_num)}}">&lt; Предыдущая страница </a>{% else %}{% endif %}
-        {% if recipes.has_next %}<a href="{{ url_for('main_page', page=recipes.next_num)}}"> Следующая страница &gt;</a>{% else %}{% endif %}
+            <div class="recipe-block">
+                <div class="img_recipe">
+                <img src="{{ recipe.image }}" width="100%" height="100%"/>
+
+                </div>
+                <p style="padding: 10px 10px 10px 10px; text-align: center; font-size: 24px; color: #1A1A1A;">{{ recipe.title }}</p>
+                <p style="padding: 0px 10px 10px 10px; text-align: center; font-size: 18px; color: #505050;">Автор: {{ names_authors[loop.index] }}</p>
+            </div>
+        {% endfor %}<br>
+            <div  class="form-a-page">
+        {% if recipes.has_prev %}<a href="{{ url_for('main_page', page=recipes.prev_num)}}">&lt;   Предыдущая страница </a>{% else %}{% endif %}
+            {% if recipes.has_next %}<a href="{{ url_for('main_page', page=recipes.next_num)}}"> Следующая страница   ></a>{% else %}{% endif %}
+            </div>
         </div>
 </div>
 {% include "footer.html" %}
