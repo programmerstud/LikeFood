@@ -2,7 +2,7 @@
 # coding: utf-8
 from flask import render_template, request, flash, abort, redirect, url_for
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import StringField, PasswordField, TextAreaField, FileField
 from wtforms.validators import DataRequired, Email
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, login_required, logout_user, current_user
@@ -38,8 +38,7 @@ class ChangePasswordForm(FlaskForm):
 
 class AddRecipeForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
-    category_id = StringField('category_id', validators=[DataRequired()])
-    image = StringField('image', validators=[DataRequired()])
+    image = FileField('image', validators=[DataRequired()])
     recipe_text = TextAreaField('recipe_text', validators=[DataRequired()])
 
 class AddAuthorForm(FlaskForm):
@@ -76,14 +75,14 @@ def main_page(page = 1):
         recipes = Recipe.query.order_by(Recipe.id)
         recipes_p = recipes.paginate(page, per_page, error_out=False)
         names_authors = [recipes.count()]
-        '''likes = [recipes.count()]'''
+        likes = [recipes.count()]
         i = 1
         for recipe in recipes:
             user = User.query.filter_by(id=recipe.author_id).first()
             names_authors.insert(i, user.login)
-            '''likes.insert(i, user_like_recipe.query.filter(Recipe.id == recipe.id).count())'''
+            likes.insert(i, db.session.query(User).join(User.user_like_recipe).filter(Recipe.id==recipe.id).count())
             i += 1
-        return render_template('index.html', recipes=recipes_p, names_authors=names_authors, is_author=is_author)
+        return render_template('index.html', recipes=recipes_p, names_authors=names_authors, likes=likes, is_author=is_author)
     else:
         return login()
 
@@ -255,15 +254,20 @@ def show_top_raiting():
 def create_recipe_page():
     form = AddRecipeForm()
     title = form.title.data
-    category_id = form.category_id.data
     image = form.image.data
     recipe_text = form.recipe_text.data
+    categories = db.session.query(Category).all()
     if form.validate_on_submit():
-        if not (title or category_id or image or recipe_text):
+        category_id = request.form.get('category')
+        if not (title  or image or recipe_text or category_id):
             flash('Пожалуйста, заполните все поля!')
         else:
             author_id = current_user.id
-            new_recipe = Recipe(title=title, category_id=category_id, image=image, recipe_text=recipe_text,author_id=author_id)
+            PATH = os.getcwd() + "\\logic\\static\\images\\" + title
+            os.mkdir(PATH)
+            image.save(os.path.join(PATH + "\\" + image.filename ))
+            file_path = "static/images/" + title + "/" + image.filename
+            new_recipe = Recipe(title=title, category_id=category_id, image=file_path, recipe_text=recipe_text, author_id=author_id)
             db.session.add(new_recipe)
             db.session.commit()
 
@@ -271,8 +275,7 @@ def create_recipe_page():
     else:
         if title:
             flash("Данный логин не допустим!")
-    return render_template('new_recipe_page.html', form=form)
-
+    return render_template('new_recipe_page.html', form=form, categories=categories)
 
 
 @app.route('/logout')
