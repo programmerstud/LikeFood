@@ -13,12 +13,8 @@ import os
 import random
 import string
 from werkzeug.utils import secure_filename
-from logic import app, db
-from logic.models import User, Recipe, Category, user_like_recipe, user_schema
-
-UPLOAD_FOLDER = '/static/images'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-
+from logic import app
+from logic.LikeFood import likeFood
 
 class LoginForm(FlaskForm):
     login = StringField('login', validators=[DataRequired()])
@@ -44,10 +40,6 @@ class AddRecipeForm(FlaskForm):
 class AddAuthorForm(FlaskForm):
     login = StringField('login', validators=[DataRequired()])
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
 '''@app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -64,25 +56,15 @@ def uploaded_file(filename):
                                filename)
 '''
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/index/', methods=['GET', 'POST'])
 @app.route('/<int:page>', methods = ['GET', 'POST'])
 def main_page(page = 1):
-    if current_user.is_authenticated:
+    if likeFood.current_user_is_authenticated():
         per_page = 9
         is_author = False
-        if current_user.role == "Author":
+        if likeFood.current_user_role() == "Author":
             is_author = "True"
-        recipes = Recipe.query.order_by(Recipe.id)
-        recipes_p = recipes.paginate(page, per_page, error_out=False)
-        names_authors = [recipes.count()]
-        likes = [recipes.count()]
-        i = 1
-        for recipe in recipes:
-            user = User.query.filter_by(id=recipe.author_id).first()
-            names_authors.insert(i, user.login)
-            likes.insert(i, db.session.query(User).join(User.user_like_recipe).filter(Recipe.id==recipe.id).count())
-            i += 1
-        return render_template('index.html', recipes=recipes_p, names_authors=names_authors, likes=likes, is_author=is_author)
+        return render_template('index.html', recipes=likeFood.show_recipes('recipes').paginate(page, per_page, error_out=False),
+                               names_authors=likeFood.show_recipes('authors'), likes=likeFood.show_recipes('likes'), is_author=is_author)
     else:
         return login()
 
@@ -90,10 +72,10 @@ def main_page(page = 1):
 @app.route('/top_authors', methods=['GET', 'POST'])
 @login_required
 def raiting_page():
-    if current_user.role == "Reader" or current_user.role == "Author":
-        return top_page()
-    else:
-        return top_page()
+    is_admin = False
+    if likeFood.current_user_role() == "Admin":
+        is_admin = "True"
+    return render_template('top_page.html', raiting = likeFood.show_top_raiting(), is_admin=is_admin)
 
 
 @app.route('/new_recipe', methods=['GET', 'POST'])
@@ -104,17 +86,15 @@ def new_recipe_page():
     else:
         return main_page()
 
-
-
 def login():
     form = LoginForm()
     login = form.login.data
     password = form.password.data
     if form.validate_on_submit():
         if login and password:
-            user = User.query.filter_by(login=login).first()
+            user = likeFood.check_user(login)
             if user and user.password == password:
-                login_user(user)
+                likeFood.login(login)
                 return redirect(url_for('main_page'))
             else:
                 flash('Логин или пароль введены неверно')
@@ -138,13 +118,11 @@ def register():
             if (not(7 < len(password) < 20) or (password.isdigit() or password.isalpha())):
                 flash('Пароль не соответствует правилам безопасности!')
             else:
-                user = User.query.filter_by(login=login).first()
+                user = likeFood.check_user(login)
                 if user is not None:
                     flash('Пользователь с таким логином уже существует!')
                 else:
-                    new_user = User(login=login, password=password,role="Reader")
-                    db.session.add(new_user)
-                    db.session.commit()
+                    likeFood.register(login, password, 'Reader')
 
                     return redirect(url_for('main_page'))
     else:
@@ -169,10 +147,7 @@ def change_password():
             if (not(7 < len(new_password) < 20) or (new_password.isdigit() or new_password.isalpha())):
                 flash('Пароль не соответствует правилам безопасности!')
             else:
-                user = User.query.filter_by(login=current_user.login).first()
-                user.password = new_password
-                db.session.add(user)
-                db.session.commit()
+                likeFood.change_password(login, new_password)
                 flash("Вы успешно сменили пароль!")
     return render_template('change_password.html', form = form)
 
@@ -186,35 +161,15 @@ def add_author():
     if form.validate_on_submit():
         if not (login):
             flash('Пожалуйста, заполните поле логина!')
-        elif User.query.filter_by(login=login).first() is not None:
+        elif likeFood.check_user(login) is not None:
             flash('Пользователь с таким логином уже существует!')
         else:
-            password = gen(method=["uppercase", "lowercase", "digits"])
-            new_user = User(login=login, password=password,role="Author")
-            db.session.add(new_user)
-            db.session.commit()
+            password = likeFood.gen_password(method=["uppercase", "lowercase", "digits"])
+            likeFood.register(login, password, 'Author')
             str += "Информация для авторизации:"
             l += "Логин: " + login
             p += "Пароль: " + password
     return render_template('author_registration.html', form = form, content = str, login = l, password = p)
-
-
-def gen(length=8, method=["lowercase", "uppercase", "digits", "punctuation"]):
-    pwd = []
-    for i in range(length):
-        choice = random.choice(method)
-        if choice == "lowercase":
-            pwd.append(random.choice(string.ascii_lowercase))
-        if choice == "uppercase":
-            pwd.append(random.choice(string.ascii_uppercase))
-        if choice == "digits":
-            pwd.append(random.choice(string.digits))
-        if choice == "punctuation":
-            pwd.append(random.choice(string.punctuation))
-        if choice == "string":
-            pwd.append(random.choice(string.punctuation))
-    random.shuffle(pwd)
-    return ''.join(pwd)
 
 '''
 @app.route('/<int:page>',methods = ['GET', 'POST'])
@@ -228,49 +183,18 @@ def allRecipePageAuthor():
     return render_template('index_for_authors.html')
 '''
 
-@login_required
-def top_page():
-    is_admin = False
-    if current_user.role == "Admin":
-        is_admin = "True"
-    rait = show_top_raiting()
-    return render_template('top_page.html', raiting = rait, is_admin=is_admin)
-
-
-def show_top_raiting():
-    authors = User.query.filter_by(role='Author').all()
-    raiting = {}
-    for author in authors:
-        count = 0
-        recipes = Recipe.query.filter_by(author_id=author.id).all()
-        for recipe in recipes:
-            count += db.session.query(User).join(User.user_like_recipe).filter(Recipe.id==recipe.id).count()
-        raiting[author.login]=count
-    list_raiting = list(raiting.items())
-    list_raiting.sort(key=lambda i: i[1], reverse=True)
-    return list_raiting
-
-
 def create_recipe_page():
     form = AddRecipeForm()
     title = form.title.data
     image = form.image.data
     recipe_text = form.recipe_text.data
-    categories = db.session.query(Category).all()
+    categories = likeFood.show_categories()
     if form.validate_on_submit():
         category_id = request.form.get('category')
-        if not (title  or image or recipe_text or category_id):
+        if not (title or image or recipe_text or category_id):
             flash('Пожалуйста, заполните все поля!')
         else:
-            author_id = current_user.id
-            PATH = os.getcwd() + "\\logic\\static\\images\\" + title
-            os.mkdir(PATH)
-            image.save(os.path.join(PATH + "\\" + image.filename ))
-            file_path = "static/images/" + title + "/" + image.filename
-            new_recipe = Recipe(title=title, category_id=category_id, image=file_path, recipe_text=recipe_text, author_id=author_id)
-            db.session.add(new_recipe)
-            db.session.commit()
-
+            likeFood.create_recipe(title, category_id, image, recipe_text)
         return redirect(url_for('main_page'))
     else:
         if title:
@@ -281,7 +205,7 @@ def create_recipe_page():
 @app.route('/logout')
 @login_required
 def logout():
-    logout_user()
+    likeFood.logout()
     return redirect(url_for('main_page'))
 
 
