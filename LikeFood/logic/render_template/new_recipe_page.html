@@ -4,9 +4,9 @@
     <div class="main_container">
   <p style="font-size: 30px; margin-bottom: 25px;">Добавить новый рецепт:</p>
 <form enctype="multipart/form-data" method="POST">
-        {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes style="color: #fff; margin-top: -30px; margin-bottom: 20px;">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes style="color: #1A1A1A; margin-top: 30px; margin-bottom: 20px;">
     {% for message in messages %}
       <li>{{ message }}</li>
     {% endfor %}
@@ -15,7 +15,7 @@
 {% endwith %}
         {{ form.csrf_token }}
         {{ form.title(style="width: 800px; color: #1A1A1A; border: 2px solid #1A1A1A; margin-bottom: 20px;", class="form-control", placeholder="Название") }}<br>
-        {{ form.image(class="form-control", placeholder="Картинка") }}<br>
+    <p style="position: absolute; font-size: 22px; color: #fff; margin: 22px 0 0 45px;">Загрузить фото</p><label class="form-bt-file-mask" for="upload"><div id="upload">{{ form.image(class="form-bt-file") }}</div></label><br>
     <p style="margin: 20px 0 30px; font-size: 22px;">Выберите категорию:</p>
     {% for category in categories %}
             <p style="margin-top: 20px;"><input type="radio" name="category" class="custom-radio" id= {{ category.id }} value= {{ category.id }} checked><label style="font-size: 18px;" for= {{ category.id }}>{{category.title}}</label></p>

@@ -9,6 +9,15 @@
             <div><input class="form-bt" type="submit" value="Отправить">
                 <a class="form-a" style="margin-left: 30px; color:#1A1A1A;" href="/top_authors">Отмена</a>
             </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes style="color: #1A1A1A; margin-top: 30px; margin-bottom: -60px;">
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
     <p style="margin-top: 30px; font-size: 20px;">{{ content|safe }}</p>
     <p style="margin-top: 30px; font-size: 20px;">{{ login|safe }}</p>
     <p style="margin-top: 15px; font-size: 20px;">{{ password|safe }}</p>

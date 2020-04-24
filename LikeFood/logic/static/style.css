@@ -58,6 +58,7 @@ button:focus {
   box-shadow: 0px 10px 20px rgba(0,0,0,0.5);
   top: 0;
   left: 0;
+  z-index: 2;
 }
 
 header{
@@ -76,6 +77,7 @@ header{
     box-sizing: border-box;
     padding-bottom: 1em;
     text-align: center;
+    z-index: 3;
 }
 
 .container{
@@ -184,6 +186,7 @@ header{
     padding: 0;
     list-style: none;
     overflow: hidden;
+    z-index: 3;
 }
 
 .nav2{
@@ -213,12 +216,12 @@ header{
 }
 
 .nav2{
-  display: flex;  
+  display: flex;
   text-align: center;
   padding-left: 0;
   margin-top: 0;
   margin-bottom: 0;
-  list-style: none;  
+  list-style: none;
 }
 
 .nav2 li{
@@ -241,7 +244,7 @@ header{
   overflow: hidden;
 }
 
-.nav2 li a::before, 
+.nav2 li a::before,
 .nav2 li a::after{
   content: "";
   width: 0;
@@ -253,15 +256,15 @@ header{
 
 .nav2 li a::before{
   left: 50%;
-  transform: translateX(-50%); 
+  transform: translateX(-50%);
 }
 
 .nav2 li a::after{
   right: 50%;
-  transform: translateX(50%); 
+  transform: translateX(50%);
 }
 
-.nav2 li a:hover::before, 
+.nav2 li a:hover::before,
 .nav2 li a:hover::after{
   width: 100%;
   transition-duration: 0.5s;
@@ -492,3 +495,61 @@ header{
   .table_authors thead tr {border-top: 1px solid #A3A3A3;}
   .table_authors tr {border-bottom: 1px solid #A3A3A3;}
 
+.form-bt-file-mask{
+    cursor: pointer;
+    margin-top: 10px;
+    /*padding-top: 15px;*/
+    width: 260px;
+    height: 50px;
+    background-color: #1A1A1A;
+    color: #fff;
+    font-size: 20px;
+    text-align:center;
+    border-radius: 10px;
+    border: 2px solid #C4C4C4;
+    transition: all .2s ease;
+    display: block;
+}
+
+.form-bt-file-mask:hover{
+    border: 2px solid #1A1A1A;
+    transition: all .2s ease;
+}
+
+.form-bt-file {
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height:100%;
+}
+
+#upload{
+    cursor: pointer;
+    width: 260px;
+    height:50px;
+}
+
+.img_recipe_page{
+    /*box-shadow: inset 0 15px 20px 10px rgba(0,0,0,0.5);*/
+    position: relative;
+    margin-top: 394px;
+    width: 960px;
+    height: 645px;
+    z-index: 1;
+}
+
+.btns-recipe{
+    display: inline-block;
+    width: 100%;
+}
+
+.img-delete,
+.img-like{
+opacity: 0.5;
+transition: opacity 0.2s linear;
+}
+
+.img-delete:hover,
+.img-like:hover{
+opacity: 0.9;
+}

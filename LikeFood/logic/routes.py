@@ -208,7 +208,16 @@ def logout():
     likeFood.logout()
     return redirect(url_for('main_page'))
 
-
+@app.route('/recipe_page', methods=['GET', 'POST'])
+@login_required
+def recipe_page():
+    is_admin = False
+    is_author = False
+    if likeFood.current_user_role() == "Admin":
+        is_admin = "True"
+    if likeFood.current_user_role() == "Author":
+        is_author = "True"
+    return render_template('recipe_page.html', raiting = likeFood.show_top_raiting(), is_admin=is_admin, is_author=is_author)
 
 if __name__=="__main__":
     app.run(debug=True)
