@@ -11,6 +11,9 @@
 ## Навигация по документации
 [Техническое задание](https://github.com/programmerstud/LikeFood/blob/master/Documents/Техническое%20задание.pdf) <br>
 [Введение. Постановка задачи. Анализ предметной области.](https://github.com/programmerstud/LikeFood/blob/master/Documents/Введение.Постановка%20Задачи.%20Анализ%20предметной%20области.docx) <br>
+[Отчет по ролям.](https://github.com/programmerstud/LikeFood/blob/master/Documents/Отчет%20по%20ролям.pdf) <br>
+[Диаграммы.](https://github.com/programmerstud/LikeFood/tree/master/Documents/Диаграммы) <br>
+
 
 ## Ссылки
 [Trello Board](https://trello.com/b/2sgQHScX/likefood) <br>
