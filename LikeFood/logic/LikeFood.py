@@ -72,6 +72,13 @@ class LikeFood:
     def get_recipe_info(self, recipe_id):
         return self.recipe_logic.find_recipe_by_id(recipe_id)
 
+    def is_user_like_recipe(self, id):
+        like = self.recipe_logic.get_recipe_like_by_user(current_user, id)
+        if like:
+            return True
+        else:
+            return False
+
     def add_like_to_recipe(self, recipe_id):
         return self.recipe_logic.put_like(current_user, self.get_recipe_info(recipe_id))
 

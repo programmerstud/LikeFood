@@ -16,6 +16,7 @@ from werkzeug.utils import secure_filename
 from logic import app
 from logic.LikeFood import likeFood
 
+
 class LoginForm(FlaskForm):
     login = StringField('login', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
@@ -40,21 +41,7 @@ class AddRecipeForm(FlaskForm):
 class AddAuthorForm(FlaskForm):
     login = StringField('login', validators=[DataRequired()])
 
-'''@app.route('/', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-    return
-@app.route('/static/images/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
-'''
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/<int:page>', methods = ['GET', 'POST'])
 def main_page(page = 1):
@@ -171,17 +158,6 @@ def add_author():
             p += "Пароль: " + password
     return render_template('author_registration.html', form = form, content = str, login = l, password = p)
 
-'''
-@app.route('/<int:page>',methods = ['GET', 'POST'])
-@login_required
-def allRecipePage(page = 1):
-    per_page = 1
-    recipes = Recipe.query.order_by(Recipe.id).paginate(page,per_page,error_out=False)
-    return render_template('index.html',recipes=recipes)
-@login_required
-def allRecipePageAuthor():
-    return render_template('index_for_authors.html')
-'''
 
 def create_recipe_page():
     form = AddRecipeForm()
@@ -208,16 +184,30 @@ def logout():
     likeFood.logout()
     return redirect(url_for('main_page'))
 
-@app.route('/recipe_page', methods=['GET', 'POST'])
+
+@app.route('/recipe/<int:id>', methods=['GET', 'POST'])
 @login_required
-def recipe_page():
+def recipe_page(id):
+    recipe = likeFood.get_recipe_info(id)
     is_admin = False
     is_author = False
     if likeFood.current_user_role() == "Admin":
         is_admin = "True"
     if likeFood.current_user_role() == "Author":
         is_author = "True"
-    return render_template('recipe_page.html', raiting = likeFood.show_top_raiting(), is_admin=is_admin, is_author=is_author)
+    if request.method == 'POST':
+        action = request.form['submit_button']
+        if action=='like':
+            if likeFood.is_user_like_recipe(id):
+                likeFood.delete_like_from_recipe(id)
+            else:
+                likeFood.add_like_to_recipe(id)
+
+        if action=='delete':
+            likeFood.delete_recipe(id)
+            return redirect(url_for('main_page'))
+
+    return render_template('recipe_page.html', raiting = likeFood.show_top_raiting(),recipe=recipe,  is_admin=is_admin, is_author=is_author)
 
 if __name__=="__main__":
     app.run(debug=True)

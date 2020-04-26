@@ -3,17 +3,19 @@
 {% include "filter.html" %}
         <div class="main_container" style="width: 1000px;">
         {% for recipe in recipes.items %}
-            <div class="recipe-block">
+            <div class="recipe-block" >
                 <div class="img_recipe">
                     <div class="black-mask"></div>
                 <img class="img_recipe-img" src="{{ recipe.image }}" width="100%" height="100%"/>
-                    <div class="mask">
+                    <div class="mask"><a href="{{ url_for('recipe_page', id=recipe.id)}}">
                         <img class="mask-img" src="../static/images/like-white.png"/>
                         <p class="mask-text">{{ likes[loop.index] }}</p>
+                        </a>
                     </div>
                 </div>
                     <p style="text-align: center; padding: 15px 10px 10px 10px; font-size: 24px; color: #1A1A1A;">{{ recipe.title }}</p>
                     <p style="text-align: center; padding: 0px 10px 10px 10px; font-size: 18px; color: #505050;">Автор: {{ names_authors[loop.index] }}</p>
+
             </div>
         {% endfor %}<br>
             <div  class="form-a-page">

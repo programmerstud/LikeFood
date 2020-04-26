@@ -18,8 +18,8 @@ class RecipeLogic:
     def get_recipe_likes(self, id):
         return db.session.query(User).join(User.user_like_recipe).filter(Recipe.id==id).count()
 
-    def get_recipe_like_by_user(self, user_id, recipe_id):
-        return db.session.query(User).filter(id == user_id).join(User.user_like_recipe).filter(Recipe.id == recipe_id).count()
+    def get_recipe_like_by_user(self, user: User, id):
+        return db.session.query(User).join(User.user_like_recipe).filter(Recipe.id==id, User.id==user.id).all()
 
     def put_like(self, user: User, recipe:Recipe):
         user.user_like_recipe.append(recipe)
@@ -61,3 +61,4 @@ class RecipeLogic:
     def delete_recipe(self, id):
         db.session.delete(self.find_recipe_by_id(id))
         db.session.commit()
+
