@@ -10,9 +10,11 @@
 
 ## Навигация по документации
 [Техническое задание](https://github.com/programmerstud/LikeFood/blob/master/Documents/Техническое%20задание.pdf) <br>
-[Курсовой проект](https://github.com/programmerstud/LikeFood/blob/master/Documents/КурсовойПроект.pdf) <br>
+[Курсовой проект](https://github.com/programmerstud/LikeFood/blob/master/Documents/Курсовой%20проект.pdf) <br>
 [Отчет по ролям](https://github.com/programmerstud/LikeFood/blob/master/Documents/Отчет%20по%20ролям.pdf) <br>
 [Диаграммы](https://github.com/programmerstud/LikeFood/tree/master/Documents/Диаграммы) <br>
+[Приложение](http://marinavereshhagina.pythonanywhere.com) <br>
+[Яндекс.Метрика](https://metrika.yandex.ru/dashboard?id=62321035) <br>
 
 
 ## Ссылки
