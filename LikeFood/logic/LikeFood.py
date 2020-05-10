@@ -94,11 +94,21 @@ class LikeFood:
     def register(self, login, password, role):
         return self.user_logic.add_user(login, password, role)
 
-    def get_filter_recipes(self, author_login, name, category, sorting, isAuthor):
-        if (isAuthor):
-            return self.recipe_logic.filter_my_recipes(author_login, name, category, sorting, current_user)
-        else:
-            return self.recipe_logic.filter_recipes_sorting(author_login, name, category, sorting)
+    def get_filtered_recipes(self, name, author_name, my_id, categories, order):
+        recipes = self.recipe_logic.get_recipes()
+        if name :
+            recipes = self.recipe_logic.filter_by_recipe_name(recipes, name)
+        if author_name:
+            recipes = self.recipe_logic.filter_by_author(recipes, self.user_logic.find_by_login(author_name))
+        if my_id:
+            recipes = self.recipe_logic.filter_by_author_id(recipes, my_id)
+        if categories:
+            recipes = self.recipe_logic.filter_by_categories(recipes, categories)
+
+        return self.recipe_logic.filter_order_by(recipes, order)
+
+
+
 
     def create_recipe(self, title, category_id, image, recipe_text):
         author_id = current_user.id

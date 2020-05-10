@@ -50,7 +50,8 @@ def main_page(page = 1):
         is_author = False
         if likeFood.current_user_role() == "Author":
             is_author = "True"
-        return render_template('index.html', recipes=likeFood.show_recipes('recipes').paginate(page, per_page, error_out=False),
+        recipes = likeFood.get_filtered_recipes('АААА', 'admin@q.ru', 2, [1,2,3,4,5,6], 'new')
+        return render_template('index.html', recipes= recipes.paginate(page, per_page, error_out=False),
                                names_authors=likeFood.show_recipes('authors'), likes=likeFood.show_recipes('likes'), is_author=is_author)
     else:
         return login()

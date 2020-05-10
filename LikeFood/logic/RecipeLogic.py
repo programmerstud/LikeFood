@@ -1,6 +1,7 @@
 from logic import db
 from logic.models import Recipe, User
 from sqlalchemy import desc
+from flask_sqlalchemy import BaseQuery
 
 class RecipeLogic:
     def __init__(self):
@@ -13,10 +14,15 @@ class RecipeLogic:
         return new_recipe
 
     def get_recipes(self):
-        return Recipe.query.order_by(Recipe.id)
+        return Recipe.query
 
     def get_recipe_likes(self, id):
         return db.session.query(User).join(User.user_like_recipe).filter(Recipe.id==id).count()
+
+
+    def get_recipes_with_likes(self):
+        return db.session.query(Recipe).join(User.user_like_recipe).filter(Recipe.id==id).count()
+
 
     def get_recipe_like_by_user(self, user: User, id):
         return db.session.query(User).join(User.user_like_recipe).filter(Recipe.id==id, User.id==user.id).all()
@@ -62,3 +68,33 @@ class RecipeLogic:
         db.session.delete(self.find_recipe_by_id(id))
         db.session.commit()
 
+    def filter_by_recipe_name(self, recipes : BaseQuery, name):
+        return recipes.filter(Recipe.title.like('%' + name + '%'))
+
+    def filter_by_author(self , recipes : BaseQuery, author : User):
+        return recipes.filter(Recipe.author_id == author.id)
+
+    def filter_by_author_id(self, recipes : BaseQuery, author_id):
+        return recipes.filter(Recipe.author_id == author_id)
+
+    def filter_by_categories(self, recipes : BaseQuery, categories):
+        return recipes.filter(Recipe.category_id.in_(categories))
+
+    def filter_order_by(self, recipes : BaseQuery, order):
+        if (order == 'like'):
+            return None
+            '''
+            print(User.user_like_recipe.all())
+            print('-------------------------------------------')
+
+            db.session.query(User).options(db.joinedload(User.user_like_recipe))
+
+            print(db.session.query(User.id, Recipe.id).join(Recipe).options(db.joinedload(User.user_like_recipe)))
+            print(db.session.query(User.id, Recipe.id).join(Recipe).options(db.joinedload(User.user_like_recipe)).all())
+            print(db.session.query(User.user_like_recipe).join(Recipe).filter(Recipe.id = user_like_recipe_1.id))
+            print(db.session.query(User.user_like_recipe).join(Recipe).filter(
+                Recipe.id == User.user_like_recipe.recipe_id))
+                recipes.order_by(desc(recipes.join(User.user_like_recipe).filter(Recipe.id == id).count()))'''
+
+        else:
+            return recipes.order_by(desc(Recipe.id))
