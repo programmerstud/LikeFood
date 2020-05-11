@@ -49,8 +49,7 @@ class LikeFood:
         list_raiting.sort(key=lambda i: i[1], reverse=True)
         return list_raiting
 
-    def show_recipes(self, value):
-        recipes = self.recipe_logic.get_recipes()
+    def show_recipes(self, recipes, value):
         names_authors = [recipes.count()]
         likes = [recipes.count()]
         i = 1
@@ -59,8 +58,6 @@ class LikeFood:
             names_authors.insert(i, user.login)
             likes.insert(i, self.recipe_logic.get_recipe_likes(recipe.id))
             i += 1
-        if value == 'recipes':
-            return recipes
         if value == 'authors':
             return names_authors
         if value == 'likes':
@@ -96,19 +93,16 @@ class LikeFood:
 
     def get_filtered_recipes(self, name, author_name, my_id, categories, order):
         recipes = self.recipe_logic.get_recipes()
-        if name :
+        if name:
             recipes = self.recipe_logic.filter_by_recipe_name(recipes, name)
         if author_name:
-            recipes = self.recipe_logic.filter_by_author(recipes, self.user_logic.find_by_login(author_name))
-        if my_id:
-            recipes = self.recipe_logic.filter_by_author_id(recipes, my_id)
+            if (self.user_logic.find_by_login(author_name)):
+                recipes = self.recipe_logic.filter_by_author(recipes, self.user_logic.find_by_login(author_name))
+        if (my_id == 'True'):
+            recipes = self.recipe_logic.filter_by_author_id(recipes, current_user.id)
         if categories:
             recipes = self.recipe_logic.filter_by_categories(recipes, categories)
-
         return self.recipe_logic.filter_order_by(recipes, order)
-
-
-
 
     def create_recipe(self, title, category_id, image, recipe_text):
         author_id = current_user.id

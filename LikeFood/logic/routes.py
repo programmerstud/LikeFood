@@ -2,7 +2,7 @@
 # coding: utf-8
 from flask import render_template, request, flash, abort, redirect, url_for
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, FileField
+from wtforms import StringField, PasswordField, TextAreaField, FileField, SelectField, SelectMultipleField, BooleanField
 from wtforms.validators import DataRequired, Email
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, login_required, logout_user, current_user
@@ -41,18 +41,34 @@ class AddRecipeForm(FlaskForm):
 class AddAuthorForm(FlaskForm):
     login = StringField('login', validators=[DataRequired()])
 
+class Filtration(FlaskForm):
+    name = StringField('name')
+    login = StringField('login')
+    author = BooleanField('author')
+    sort_choices = [('like', 'По рейтингу'),
+                      ('new', 'По новизне')]
+    filter_choices = [('1', 'Первые блюда'),
+                    ('2', 'Вторые блюда'),
+                    ('3', 'Салаты'),
+                    ('4', 'Закуски'),
+                    ('5', 'Десерты')]
+    sort = SelectField(u'Сортировка', choices=sort_choices)
+    filter = SelectMultipleField(u'Фильтрация', choices=filter_choices)
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/<int:page>', methods = ['GET', 'POST'])
-def main_page(page = 1):
+def main_page(page = 1, name=None, log = None, author=None, filter=None, sort=None):
     if likeFood.current_user_is_authenticated():
+        form = Filtration()
         per_page = 9
         is_author = False
         if likeFood.current_user_role() == "Author":
             is_author = "True"
-        recipes = likeFood.get_filtered_recipes('АААА', 'admin@q.ru', 2, [1,2,3,4,5,6], 'new')
-        return render_template('index.html', recipes= recipes.paginate(page, per_page, error_out=False),
-                               names_authors=likeFood.show_recipes('authors'), likes=likeFood.show_recipes('likes'), is_author=is_author)
+        if form.validate_on_submit():
+            return redirect(url_for('main_page', page=1, name=form.name.data, log=form.login.data, author=form.author.data, filter=form.filter.data, sort=form.sort.data))
+        recipes = likeFood.get_filtered_recipes(request.args.get('name'), request.args.get('log'), str(request.args.get('author')), request.args.get('filter'), request.args.get('sort'))
+        return render_template('index.html', form = form, name=request.args.get('name'), log = request.args.get('log'), author = request.args.get('author'), filter = request.args.get('filter'), sort = request.args.get('sort'),  page=1, recipes= recipes.paginate(page, per_page, error_out=False),
+                               names_authors=likeFood.show_recipes(recipes, 'authors')[(page-1)*per_page:(page-1)*per_page+per_page+1], likes=likeFood.show_recipes(recipes, 'likes')[(page-1)*per_page:(page-1)*per_page+per_page+1], is_author=is_author)
     else:
         return login()
 
@@ -203,7 +219,6 @@ def recipe_page(id):
                 likeFood.delete_like_from_recipe(id)
             else:
                 likeFood.add_like_to_recipe(id)
-
         if action=='delete':
             likeFood.delete_recipe(id)
             return redirect(url_for('main_page'))

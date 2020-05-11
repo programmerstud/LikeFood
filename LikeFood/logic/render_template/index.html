@@ -1,6 +1,18 @@
 {% include "layout.html" %}
 <div class="container">
-{% include "filter.html" %}
+<div class="filter">
+    <form method="POST">
+                <input value="+" type="button" class="form-bt-f" style="font-size: 30px; float: right; width: 100px;" onclick="location.href='/new_recipe'" />
+  {{ form.hidden_tag() }}
+        {{ form.name}}
+        {{ form.login}}
+        {{ form.author}}
+  {{ form.filter.label }} {{ form.filter(rows=5, multiple=True) }}
+  {{ form.sort.label }} {{ form.sort() }}
+            <input class="form-bt-f" type="submit" value="Поиск рецептов">
+    </form>
+</div>
+
         <div class="main_container" style="width: 1000px;">
         {% for recipe in recipes.items %}
             <div class="recipe-block" >
@@ -19,8 +31,8 @@
             </div>
         {% endfor %}<br>
             <div  class="form-a-page">
-        {% if recipes.has_prev %}<a href="{{ url_for('main_page', page=recipes.prev_num)}}">&lt;   Предыдущая страница </a>{% else %}{% endif %}
-            {% if recipes.has_next %}<a href="{{ url_for('main_page', page=recipes.next_num)}}"> Следующая страница   ></a>{% else %}{% endif %}
+        {% if recipes.has_prev %}<a href="{{ url_for('main_page', page=recipes.prev_num, name=name, log=log, author=author, filter=filter,sort=sort)}}">&lt;   Предыдущая страница </a>{% else %}{% endif %}
+            {% if recipes.has_next %}<a href="{{ url_for('main_page', page=recipes.next_num, name=name, log=log, author=author, filter=filter,sort=sort)}}"> Следующая страница   ></a>{% else %}{% endif %}
             </div>
         </div>
 </div>

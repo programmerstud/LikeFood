@@ -1,7 +1,8 @@
 from logic import db
 from logic.models import Recipe, User
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 from flask_sqlalchemy import BaseQuery
+from sqlalchemy.sql import text
 
 class RecipeLogic:
     def __init__(self):
@@ -43,27 +44,6 @@ class RecipeLogic:
     def find_recipe_by_id(self, id):
         return Recipe.query.filter_by(id=id).first()
 
-    def filter_recipes_author(self, author_login, name, category, sorting):
-        return Recipe.query.join(User).filter_by(Recipe.author_id == User.id).filter_by(User.login.like(author_login))
-
-    def filter_recipes_name(self, author_login, name, category, sorting):
-        return self.filter_recipes_author(author_login, name, category, sorting).filter_by(Recipe.name == name)
-
-    def filter_recipes_category(self, author_login, name, category, sorting):
-        return self.filter_recipes_name(author_login, name, category, sorting).filter_by(Recipe.category_id in [category])
-
-    def filter_recipes_sorting(self, author_login, name, category, sorting):
-        if ('sorting' == 'new'):
-            return  self.filter_recipes_category(author_login, name, category, sorting).order_by(desc(Recipe.id))
-        else:
-            return  self.filter_recipes_category(author_login, name, category, sorting).order_by(desc(self.get_recipe_likes(Recipe.id)))
-
-    def filter_my_recipes(self, author_login, name, category, sorting, user: User):
-        if ('sorting' == 'new'):
-            return  self.filter_recipes_category(author_login, name, category, sorting).filter(Recipe.author_id == user.id).order_by(desc(Recipe.id))
-        else:
-            return  self.filter_recipes_category(author_login, name, category, sorting).filter(Recipe.author_id == user.id).order_by(desc(self.get_recipe_likes(Recipe.id)))
-
     def delete_recipe(self, id):
         db.session.delete(self.find_recipe_by_id(id))
         db.session.commit()
@@ -71,7 +51,7 @@ class RecipeLogic:
     def filter_by_recipe_name(self, recipes : BaseQuery, name):
         return recipes.filter(Recipe.title.like('%' + name + '%'))
 
-    def filter_by_author(self , recipes : BaseQuery, author : User):
+    def filter_by_author(self, recipes : BaseQuery, author : User):
         return recipes.filter(Recipe.author_id == author.id)
 
     def filter_by_author_id(self, recipes : BaseQuery, author_id):
@@ -81,20 +61,10 @@ class RecipeLogic:
         return recipes.filter(Recipe.category_id.in_(categories))
 
     def filter_order_by(self, recipes : BaseQuery, order):
-        if (order == 'like'):
-            return None
-            '''
-            print(User.user_like_recipe.all())
-            print('-------------------------------------------')
-
-            db.session.query(User).options(db.joinedload(User.user_like_recipe))
-
-            print(db.session.query(User.id, Recipe.id).join(Recipe).options(db.joinedload(User.user_like_recipe)))
-            print(db.session.query(User.id, Recipe.id).join(Recipe).options(db.joinedload(User.user_like_recipe)).all())
-            print(db.session.query(User.user_like_recipe).join(Recipe).filter(Recipe.id = user_like_recipe_1.id))
-            print(db.session.query(User.user_like_recipe).join(Recipe).filter(
-                Recipe.id == User.user_like_recipe.recipe_id))
-                recipes.order_by(desc(recipes.join(User.user_like_recipe).filter(Recipe.id == id).count()))'''
-
-        else:
+        if (order == 'new'):
             return recipes.order_by(desc(Recipe.id))
+        else:
+            likes = [recipes.count()]
+            for recipe in recipes:
+                likes.insert(recipe.id, recipe.id)
+            return db.session.query(Recipe, Recipe.title.label('title'), Recipe.image.label('image'), Recipe.id.label('id'), Recipe.author_id.label('author_id'), func.count(Recipe.id).label('total')).join(User.user_like_recipe, full = True).filter(Recipe.id.in_(likes)).group_by(Recipe).order_by(text('total DESC'))
