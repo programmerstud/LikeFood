@@ -2,7 +2,7 @@ from logic import db
 from logic.models import Recipe, User
 from sqlalchemy import desc, func
 from flask_sqlalchemy import BaseQuery
-from sqlalchemy.sql import text
+from sqlalchemy.sql import text, case
 
 class RecipeLogic:
     def __init__(self):
@@ -64,7 +64,11 @@ class RecipeLogic:
         if (order == 'new'):
             return recipes.order_by(desc(Recipe.id))
         else:
-            likes = [recipes.count()]
+            likes = {}
             for recipe in recipes:
-                likes.insert(recipe.id, recipe.id)
-            return db.session.query(Recipe, Recipe.title.label('title'), Recipe.image.label('image'), Recipe.id.label('id'), Recipe.author_id.label('author_id'), func.count(Recipe.id).label('total')).join(User.user_like_recipe, full = True).filter(Recipe.id.in_(likes)).group_by(Recipe).order_by(text('total DESC'))
+                likes[recipe.id] = self.get_recipe_likes(recipe.id)
+
+            sort_order = case(likes, value=Recipe.id)
+            q = recipes.order_by(sort_order.desc()).all()
+
+            return recipes.order_by(sort_order.desc())
