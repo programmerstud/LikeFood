@@ -156,6 +156,11 @@ header{
     transition: opacity 0.3s linear;
 }
 
+.mask a{
+    color:#fff;
+    text-decoration: none;
+}
+
 .recipe-block:hover .mask{
     opacity: 1;
 }
@@ -545,11 +550,12 @@ header{
 
 .img-delete,
 .img-like{
-opacity: 0.5;
+opacity: 1;
 transition: opacity 0.2s linear;
 }
-
+.submit_button,
 .img-delete:hover,
 .img-like:hover{
 opacity: 0.9;
+cursor: pointer;
 }

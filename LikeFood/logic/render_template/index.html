@@ -2,33 +2,48 @@
 <div class="container">
 <div class="filter">
     <form method="POST">
-                <input value="+" type="button" class="form-bt-f" style="font-size: 30px; float: right; width: 100px;" onclick="location.href='/new_recipe'" />
-  {{ form.hidden_tag() }}
-        {{ form.name}}
-        {{ form.login}}
-        {{ form.author}}
-  {{ form.filter.label }} {{ form.filter(rows=5, multiple=True) }}
-  {{ form.sort.label }} {{ form.sort() }}
+  {{ form.csrf_token }}
+          {{ form.hidden_tag() }}
+        <img src="../static/images/search.png" class="search-img">
+        {{ form.name(class="form-filter", placeholder="Поиск по названию")}}
+        <img src="../static/images/search.png" class="search-img">
+        {{ form.login(class="form-filter", placeholder="Поиск по автору")}}
+        {% if is_author %}
+            {{ form.author(style="width: 20px; height: 20px;") }}<label style="padding-left: 10px; font-size: 18px;">Мои рецепты</label>
+            <input value="+" type="button" class="form-bt-f" style="font-size: 30px; float: right; width: 100px;" onclick="location.href='/new_recipe'" />
+        {% endif %}
+        <div class="filter-l">
+            <div class="dropdown">
+            <button class="dropbtn">Категории</button>
+                <div class="dropdown-content">
+                    {{ form.filter(rows=5, multiple=True, style="width: 304px; height: 135px; padding: 10px 0 0 15px; color: #1A1A1A;") }}
+                </div>
+            </div>
+            <div class="dropdown">
+            <button class="dropbtn">Сортировка</button>
+                <div class="dropdown-content">
+                    {{ form.sort(style="width: 304px; height: 40px; padding: 0 0 0 15px; color: #1A1A1A;") }}
+                </div>
+            </div>
             <input class="form-bt-f" type="submit" value="Поиск рецептов">
+        </div>
     </form>
 </div>
-
         <div class="main_container" style="width: 1000px;">
         {% for recipe in recipes.items %}
-            <div class="recipe-block" >
+            <a href="{{ url_for('recipe_page', id=recipe.id)}}"><div class="recipe-block" >
                 <div class="img_recipe">
                     <div class="black-mask"></div>
                 <img class="img_recipe-img" src="{{ recipe.image }}" width="100%" height="100%"/>
-                    <div class="mask"><a href="{{ url_for('recipe_page', id=recipe.id)}}">
+                    <div class="mask">
                         <img class="mask-img" src="../static/images/like-white.png"/>
                         <p class="mask-text">{{ likes[loop.index] }}</p>
-                        </a>
                     </div>
                 </div>
-                    <p style="text-align: center; padding: 15px 10px 10px 10px; font-size: 24px; color: #1A1A1A;">{{ recipe.title }}</p>
-                    <p style="text-align: center; padding: 0px 10px 10px 10px; font-size: 18px; color: #505050;">Автор: {{ names_authors[loop.index] }}</p>
+                    <p style="text-align: center; padding: 15px 10px 10px 10px; font-size: 24px; overflow: hidden; text-overflow: ellipsis; color: #1A1A1A;">{{ recipe.title }}</p>
+                    <p style="text-align: center; padding: 0px 10px 10px 10px; font-size: 18px; overflow: hidden; text-overflow: ellipsis; color: #505050;">Автор: {{ names_authors[loop.index] }}</p>
 
-            </div>
+            </div></a>
         {% endfor %}<br>
             <div  class="form-a-page">
         {% if recipes.has_prev %}<a href="{{ url_for('main_page', page=recipes.prev_num, name=name, log=log, author=author, filter=filter,sort=sort)}}">&lt;   Предыдущая страница </a>{% else %}{% endif %}

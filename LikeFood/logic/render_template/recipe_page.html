@@ -1,23 +1,25 @@
 {% include "layout.html" %}
 <div class="container">
         <div class="main_container">
-            <div class="img_recipe_page"><img style="position: relative; z-index: -2;" src="/static/images/405114-sepik_2560x1600.jpg" width="100%" height="100%"/></div>
+            <div class="img_recipe_page"><img style="position: relative; z-index: -2;" src="{{ recipe.image }}" width="100%" height="100%"/></div>
             <div class="btns-recipe">
                 <div style="width: 75%; display: block;">
                 <p style="text-align: left; margin: 40px 0 30px; font-size: 30px; color: #1A1A1A;">{{ recipe.title }}</p>
                 </div>
-                <div style="width: 20%; margin-top: -60px; float: right; display: block;">
-                    <input type="submit"><img class="img-delete" style="margin-right: 50px;" src="../static/images/delete.svg" width="40" height="50"/>
+                <form method="POST">
+                <div style="width: 20%; margin-top: -60px; float: right; display: block; z-index: 3;">
+                     <img class="img-delete" style="margin-right: 50px;" src="../static/images/delete.svg" width="40" height="50"/>
                     <img id="img" onclick="change_img('img')" class="img-like" src="../static/images/like.svg" width="50" height="50"/>
                 </div>
+                <div style="width: 20%; margin-top: -60px; float: right; display: block; z-index: -3;">
+                    <input type="submit" style="width: 40px; height: 50px; opacity: 0;" name="submit_button" class="submit_button" value="delete">
+                    <input type="submit" style="width: 50px; height: 50px; margin-left: 50px; opacity: 0;" name="submit_button" class="submit_button" value="like">
+                </div>
+                </form>
             </div>
             <p style="text-align: left; margin: 0 0 30px; font-size: 20px; color: #505050;">Автор: {{ recipe.author_id }}</p>
-            <p style="text-align: center; padding: 15px 10px 10px 10px; font-size: 24px; color: #1A1A1A;">{{ recipe.category }}</p>
+            <p style="text-align: left; margin: 0 0 30px; font-size: 18px; color: #505050;">Категория: {{ recipe.category }}</p>
             <p style="text-align: left; margin: 0 0 30px; font-size: 20px; color: #1A1A1A;">{{ recipe.recipe_text }} </p>
-            <form method="POST">
-            <input type="submit" name="submit_button" value="delete">
-            <input type="submit" name="submit_button" value="like">
-            </form>
         </div>
 </div>
 <script>
