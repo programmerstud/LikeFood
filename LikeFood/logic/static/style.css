@@ -313,6 +313,24 @@ header{
     transition: all .2s ease;
 }
 
+.form-bt-sm{
+    width: 170px;
+    height: 40px;
+    background-color: #1A1A1A;
+    color: #fff;
+    font-size: 16px;
+    text-align:center;
+    border-radius: 10px;
+    border: 2px solid #C4C4C4;
+    transition: all .2s ease;
+}
+
+.form-bt-sm p {
+color: #fff;
+font-size: 16px;
+}
+
+.form-bt-sm:hover,
 .form-bt:hover{
     border: 2px solid #1A1A1A;
     transition: all .2s ease;
@@ -550,12 +568,82 @@ header{
 
 .img-delete,
 .img-like{
-opacity: 1;
+opacity: 0.9;
 transition: opacity 0.2s linear;
 }
-.submit_button,
+.submit_button:hover,
 .img-delete:hover,
 .img-like:hover{
 opacity: 0.9;
 cursor: pointer;
+}
+
+.iw-modal {
+opacity: 0;
+background: rgba(0,0,0,0.7);
+pointer-events: none;
+position: fixed;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+z-index: 9999;
+transition: all 0.5s ease;
+margin: 0;
+padding: 0;
+}
+.iw-modal:target {
+opacity: 1;
+pointer-events: auto;
+overflow-y: auto;
+}
+.iw-modal-wrapper {
+margin:auto;
+margin-top:25vh;
+}
+
+.iw-CSS-modal-inner {
+position: relative;
+width: 500px;
+height: 220px;
+background: #fff;
+box-shadow: 0px 10px 20px rgba(0,0,0,0.5);
+}
+
+.iw-modal-header {
+padding: 50px;
+position:relative;
+}
+
+.iw-modal-title {
+text-align: center;
+font-size: 22px;
+color: #1A1A1A;
+line-height: 1.5;
+margin-top: 0;
+margin-bottom: 0;
+}
+
+.iw-close {
+position:absolute;
+top:15px;
+right:15px;
+font-size: 24px;
+color: #1A1A1A;
+text-decoration: none;
+}
+
+.iw-close:hover, .iw-close:focus {
+color: #000;
+cursor: pointer;
+}
+
+.iw-modal-bt {
+padding-left: 40px;
+}
+
+@media (min-width: 550px) {
+.iw-modal-wrapper {
+max-width: 500px;
+}
 }

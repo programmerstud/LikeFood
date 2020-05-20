@@ -219,7 +219,7 @@ def recipe_page(id):
                 likeFood.delete_like_from_recipe(id)
             else:
                 likeFood.add_like_to_recipe(id)
-        if action=='delete':
+        if action=='OK':
             likeFood.delete_recipe(id)
             return redirect(url_for('main_page'))
 

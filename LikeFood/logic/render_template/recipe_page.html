@@ -12,8 +12,8 @@
                     <img id="img" onclick="change_img('img')" class="img-like" src="../static/images/like.svg" width="50" height="50"/>
                 </div>
                 <div style="width: 20%; margin-top: -60px; float: right; display: block; z-index: -3;">
-                    <input type="submit" style="width: 40px; height: 50px; opacity: 0;" name="submit_button" class="submit_button" value="delete">
-                    <input type="submit" style="width: 50px; height: 50px; margin-left: 50px; opacity: 0;" name="submit_button" class="submit_button" value="like">
+                    <a href="#iw-modal" class="submit_button"><div style="border: 2px solid #1A1A1A; width: 40px; height: 50px; opacity: 0;"></div></a>
+                    <div style="width: 50px; height: 50px; margin-left: 95px; margin-top: -52px; opacity: 0;"><input type="submit" name="submit_button" style="width: 100%; height: 100%;" class="submit_button" value="like"></div>
                 </div>
                 </form>
             </div>
@@ -33,3 +33,20 @@ function change_img(myimg) {
     }
 }</script>
 {% include "footer.html" %}
+<div id="iw-modal" class="iw-modal">
+<div class="iw-modal-wrapper">
+<div class="iw-CSS-modal-inner">
+<div class="iw-modal-header">
+    <a href="#close" title="Закрыть" class="iw-close">×</a>
+    <p class="iw-modal-title">Вы точно хотите удалить рецепт?</p>
+</div>
+<div class="iw-modal-bt">
+<form method="POST">
+    <input type="submit" class="form-bt-sm" style="margin-left: 25px;" name="submit_button" value="OK">
+    <!--<a href="#close"><button class="form-bt-sm" style="margin-left: 25px;">Отмена</button></a>-->
+    <a href="#close" style="text-decoration: none;"><div class="form-bt-sm" style="height: 20px; margin-top: -40px; margin-left: 223px; padding: 8px 0 8px;"><p>Отмена</p></div></a>
+</form>
+</div>
+</div>
+</div>
+</div>
