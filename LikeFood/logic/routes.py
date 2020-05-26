@@ -208,6 +208,8 @@ def recipe_page(id):
     recipe = likeFood.get_recipe_info(id)
     is_admin = False
     is_author = False
+    author_login = likeFood.get_author_login(recipe.author_id)
+    category_name = likeFood.get_category_name(recipe.category_id)
     if likeFood.current_user_role() == "Admin":
         is_admin = "True"
     if likeFood.current_user_role() == "Author":
@@ -223,7 +225,7 @@ def recipe_page(id):
             likeFood.delete_recipe(id)
             return redirect(url_for('main_page'))
 
-    return render_template('recipe_page.html', raiting = likeFood.show_top_raiting(),recipe=recipe, like = likeFood.is_user_like_recipe(id), is_admin=is_admin, is_author=is_author)
+    return render_template('recipe_page.html', raiting = likeFood.show_top_raiting(),recipe=recipe, like = likeFood.is_user_like_recipe(id), is_admin=is_admin, is_author=is_author, author_login=author_login, category_name=category_name)
 
 if __name__=="__main__":
     app.run(debug=True)

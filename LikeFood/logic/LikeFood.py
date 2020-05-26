@@ -124,6 +124,12 @@ class LikeFood:
     def current_user_is_authenticated(self):
         return current_user.is_authenticated
 
+    def get_author_login(self, author_id):
+        return self.user_logic.find_by_id(author_id).login
+
+    def get_category_name(self, category_id):
+        return self.category_logic.find_by_id(category_id).title
+
     def logout(self):
         logout_user()
 

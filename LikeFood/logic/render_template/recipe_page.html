@@ -8,21 +8,39 @@
                 </div>
                 <form method="POST">
                 <div style="width: 20%; margin-top: -60px; float: right; display: block; z-index: 3;">
-                     <img class="img-delete" style="margin-right: 50px;" src="../static/images/delete.svg" width="40" height="50"/>
-                    <img id="img" onclick="change_img('img')" class="img-like" src="../static/images/like.svg" width="50" height="50"/>
+                    {% if is_admin %}
+                     <img class="img-delete" style="margin-right: 0px;" src="../static/images/delete.svg" width="40" height="50"/>
+                    {% elif is_author %}
+                    <img class="img-delete" style="margin-right: 50px;" src="../static/images/delete.svg" width="40" height="50"/>
+                    {% if like %}
+                    <img onclick="change_img('img')" class="img-like" src="../static/images/like_red.png" width="50" height="50"/>
+                    {% else %}
+                    <img onclick="change_img('img')" class="img-like" src="../static/images/like.svg" width="50" height="50"/>
+                    {% endif %}{% else %}
+                    {% if like %}
+                    <img onclick="change_img('img')" class="img-like" src="../static/images/like_red.png" width="50" height="50"/>
+                    {% else %}
+                    <img onclick="change_img('img')" class="img-like" src="../static/images/like.svg" width="50" height="50"/>
+                    {% endif %}{% endif %}
                 </div>
                 <div style="width: 20%; margin-top: -60px; float: right; display: block; z-index: -3;">
+                    {% if is_admin %}
+                    <a href="#iw-modal" class="submit_button"><div style="border: 2px solid #1A1A1A; width: 40px; height: 50px; opacity: 0;"></div></a>
+                    {% elif is_author %}
                     <a href="#iw-modal" class="submit_button"><div style="border: 2px solid #1A1A1A; width: 40px; height: 50px; opacity: 0;"></div></a>
                     <div style="width: 50px; height: 50px; margin-left: 95px; margin-top: -52px; opacity: 0;"><input type="submit" name="submit_button" style="width: 100%; height: 100%;" class="submit_button" value="like"></div>
+                    {% else %}
+                    <div style="width: 50px; height: 50px; opacity: 0;"><input type="submit" name="submit_button" style="width: 100%; height: 100%;" class="submit_button" value="like"></div>
+                    {% endif %}
                 </div>
                 </form>
             </div>
-            <p style="text-align: left; margin: 0 0 30px; font-size: 20px; color: #505050;">Автор: {{ recipe.author_id }}</p>
-            <p style="text-align: left; margin: 0 0 30px; font-size: 18px; color: #505050;">Категория: {{ recipe.category }}</p>
+            <p style="text-align: left; margin: 0 0 30px; font-size: 20px; color: #505050;">Автор: {{ author_login }}</p>
+            <p style="text-align: left; margin: 0 0 30px; font-size: 18px; color: #505050;">Категория: {{ category_name }}</p>
             <p style="text-align: left; margin: 0 0 30px; font-size: 20px; color: #1A1A1A;">{{ recipe.recipe_text }} </p>
         </div>
 </div>
-<script>
+<!--<script>
 function change_img(myimg) {
     var el = document.getElementById(myimg);
     if (el.src.indexOf("../static/images/like_red.png")>0){
@@ -31,7 +49,7 @@ function change_img(myimg) {
     else{
     el.src="../static/images/like_red.png";
     }
-}</script>
+}</script>-->
 {% include "footer.html" %}
 <div id="iw-modal" class="iw-modal">
 <div class="iw-modal-wrapper">
