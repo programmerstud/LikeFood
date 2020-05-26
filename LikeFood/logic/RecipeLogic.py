@@ -65,10 +65,13 @@ class RecipeLogic:
             return recipes.order_by(desc(Recipe.id))
         else:
             likes = {}
+            like = 0
             for recipe in recipes:
                 likes[recipe.id] = self.get_recipe_likes(recipe.id)
-
+                like+=1
             sort_order = case(likes, value=Recipe.id)
-            q = recipes.order_by(sort_order.desc()).all()
-
-            return recipes.order_by(sort_order.desc())
+            if like != 0:
+                q = recipes.order_by(sort_order.desc()).all()
+                return recipes.order_by(sort_order.desc())
+            else:
+                return recipes.order_by(desc(Recipe.id))

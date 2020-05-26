@@ -223,7 +223,7 @@ def recipe_page(id):
             likeFood.delete_recipe(id)
             return redirect(url_for('main_page'))
 
-    return render_template('recipe_page.html', raiting = likeFood.show_top_raiting(),recipe=recipe,  is_admin=is_admin, is_author=is_author)
+    return render_template('recipe_page.html', raiting = likeFood.show_top_raiting(),recipe=recipe, like = likeFood.is_user_like_recipe(id), is_admin=is_admin, is_author=is_author)
 
 if __name__=="__main__":
     app.run(debug=True)
