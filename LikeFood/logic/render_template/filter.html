@@ -3,29 +3,29 @@
 <div class="filter">
     <form method="POST">
         <img src="../static/images/search.png" class="search-img">
-        <input type="text" class="form-filter" placeholder="Поиск по названию">
+        <input type="text" class="form-filter" name="name" placeholder="Поиск по названию">
         <img src="../static/images/search.png" class="search-img">
-        <input type="text" class="form-filter" placeholder="Поиск по автору">
+        <input type="text" class="form-filter" name="autor" placeholder="Поиск по автору">
         {% if is_author %}
-         <input type="checkbox" class="custom-checkbox" id="ch"><label style="font-size: 18px;" for="ch">Мои рецепты</label>
+         <input type="checkbox" class="custom-checkbox" name="my_author" id="ch"><label style="font-size: 18px;" for="ch">Мои рецепты</label>
         <input value="+" type="button" class="form-bt-f" style="font-size: 30px; float: right; width: 100px;" onclick="location.href='/new_recipe'" />
         {% endif %}
         <div class="filter-l">
             <div class="dropdown">
             <button class="dropbtn">Категории</button>
                 <div class="dropdown-content">
-                    <input type="checkbox" class="custom-checkbox" id="ch_1"><label for="ch_1">Первые блюда</label>
-                    <input type="checkbox" class="custom-checkbox" id="ch_2"><label for="ch_2">Вторые блюда</label>
-                    <input type="checkbox" class="custom-checkbox" id="ch_3"><label for="ch_3">Салаты</label>
-                    <input type="checkbox" class="custom-checkbox" id="ch_4"><label for="ch_4">Закуски</label>
-                    <input type="checkbox" class="custom-checkbox" id="ch_5"><label for="ch_5">Десерты</label>
+                    <input type="checkbox" class="custom-checkbox" name="category" id="ch_1"><label for="ch_1">Первые блюда</label>
+                    <input type="checkbox" class="custom-checkbox" name="category" id="ch_2"><label for="ch_2">Вторые блюда</label>
+                    <input type="checkbox" class="custom-checkbox" name="category" id="ch_3"><label for="ch_3">Салаты</label>
+                    <input type="checkbox" class="custom-checkbox" name="category" id="ch_4"><label for="ch_4">Закуски</label>
+                    <input type="checkbox" class="custom-checkbox" name="category" id="ch_5"><label for="ch_5">Десерты</label>
                 </div>
             </div>
             <div class="dropdown">
             <button class="dropbtn">Сортировка</button>
                 <div class="dropdown-content">
-                    <input type="radio" name="radio_list" class="custom-radio" id="r_1" checked><label for="r_1">По рейтингу</label>
-                    <input type="radio" name="radio_list" class="custom-radio" id="r_2"><label for="r_2">По новизне</label>
+                    <input type="radio" name="sorting" class="custom-radio" id="r_1" checked><label for="r_1">По рейтингу</label>
+                    <input type="radio" name="sorting" class="custom-radio" id="r_2"><label for="r_2">По новизне</label>
                 </div>
             </div>
             <input class="form-bt-f" type="submit" value="Поиск рецептов">
