@@ -14,7 +14,7 @@ import random
 import string
 from werkzeug.utils import secure_filename
 from logic import app
-from logic.LikeFood import likeFood
+from logic.backend.LikeFood import likeFood
 
 
 class LoginForm(FlaskForm):
@@ -212,7 +212,7 @@ def recipe_page(id):
     category_name = likeFood.get_category_name(recipe.category_id)
     if likeFood.current_user_role() == "Admin":
         is_admin = "True"
-    if likeFood.current_user_role() == "Author":
+    if likeFood.current_user_role() == recipe.author_id:
         is_author = "True"
     if request.method == 'POST':
         action = request.form['submit_button']

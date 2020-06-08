@@ -1,0 +1,511 @@
+openapi: 3.0.0
+info:
+  title: LikeFood
+  license:
+    name: MIT
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/MarinaVereshhagina/LikeFood/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: Пользователь
+- name: Оценка
+- name: Категория
+- name: Рецепт
+paths:
+  /recipes:
+    get:
+      tags:
+      - Рецепт
+      summary: Получить все рецепты
+      operationId: get_all_recipes
+      responses:
+        "200":
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipes'
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /recipe/{author_id}:
+    get:
+      tags:
+      - Рецепт
+      summary: Возвращает все рецепты, созданные пользователем
+      operationId: get_recipe_by_user_id
+      parameters:
+      - name: author_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipes'
+                x-content-type: application/json
+        "404":
+          description: Пользователь не найден
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /recipe/{category_id}:
+    get:
+      tags:
+      - Рецепт
+      summary: Фильтрация по категории
+      operationId: get_recipe_by_category_id
+      parameters:
+      - name: category_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipes'
+        "404":
+          description: Категория не найдена
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /recipe/{title}:
+    get:
+      tags:
+      - Рецепт
+      summary: Фильтрация по названию
+      operationId: get_recipe_by_title
+      parameters:
+      - name: title
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipes'
+        "404":
+          description: Рецепты с таким названием не найдены
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /recipe/{id}:
+    get:
+      tags:
+      - Рецепт
+      summary: Возвращает рецепт по id
+      operationId: get_recipe_by_recipe_id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        "404":
+          description: Рецепт не найден
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+    delete:
+      tags:
+      - Рецепт
+      summary: Удалить рецепт
+      operationId: delete_recipe
+      parameters:
+      - name: id
+        in: path
+        description: id рецепта
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: удаление прошло успешно
+        "404":
+          description: id не найден
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /recipe:
+    post:
+      tags:
+      - Рецепт
+      summary: Создать рецепт
+      operationId: create_recipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        "404":
+          description: недопустимая информация
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /likes:
+    get:
+      tags:
+      - Оценка
+      summary: Получить все оценки
+      operationId: get_all_likes
+      responses:
+        "200":
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /like/{user_id}:
+    get:
+      tags:
+      - Оценка
+      summary: Возвращает все оценки пользователя по его id
+      operationId: get_like_by_user_id
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        "400":
+          description: Неразрешенный id
+        "404":
+          description: Пользователь не найден
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /like/{recipe_id}:
+    get:
+      tags:
+      - Оценка
+      summary: Возвращает все оценки на рецепте по его id
+      operationId: get_like_by_recipe_id
+      parameters:
+      - name: recipe_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        "400":
+          description: Неразрешенный id
+        "404":
+          description: Пользователь не найден
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /like:
+    post:
+      tags:
+      - Оценка
+      summary: Оценить рецепт
+      operationId: put_like
+      requestBody:
+        description: Пользователь оценил рецепт
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Like'
+        required: true
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /like/{user_id}/{recipe_id}:
+    delete:
+      tags:
+      - Оценка
+      summary: Удалить оценку с рецепта
+      operationId: delete_like
+      parameters:
+      - name: user_id
+        in: path
+        description: id пользователя
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: recipe_id
+        in: path
+        description: id рецепта
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: удаление прошло успешно
+        "404":
+          description: id не найден
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /category:
+    get:
+      tags:
+      - Категория
+      summary: Получить все категории
+      operationId: get_all_categories
+      responses:
+        "200":
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categories'
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /category/{id}:
+    get:
+      tags:
+      - Категория
+      summary: Возвращает категорию по id
+      operationId: get_category_by_id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        "404":
+          description: Категория не найдена
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /register:
+    post:
+      tags:
+      - Пользователь
+      summary: Создать нового пользователя в системе
+      operationId: create_user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: успешно
+        "400":
+          description: Запрещенные данные
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /top-authors:
+    post:
+      tags:
+      - Пользователь
+      summary: Вернуть список авторов
+      operationId: top_authors
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /user/{id}:
+    get:
+      tags:
+      - Пользователь
+      summary: Возвращает пользователя по id
+      operationId: get_user_byid
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: Пользователь не найден
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+  /change_password/{id}:
+    put:
+      tags:
+      - Пользователь
+      summary: Сменить пароль
+      operationId: change_pass
+      parameters:
+      - name: id
+        in: path
+        description: id of the user that needs an update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: успешно
+        "404":
+          description: Пользователь не найден
+      x-openapi-router-controller: swagger_server.controllers.LikeFood
+components:
+  schemas:
+    Category:
+      required:
+      - title
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          enum:
+          - Первые блюда
+          - Вторые блюда
+          - Салаты
+          - Закуски
+          - Десерты
+      example:
+        id: 0
+        title: Первые блюда
+    Categories:
+      type: array
+      items:
+        $ref: '#/components/schemas/Category'
+    User:
+      required:
+      - login
+      - password
+      - role
+      type: object
+      properties:
+        id:
+          type: integer
+        login:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum:
+          - Reader
+          - Author
+          - Admin
+      example:
+        password: password
+        role: Reader
+        id: 0
+        login: login
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    Recipe:
+      required:
+      - author_id
+      - category_id
+      - image
+      - recipe_text
+      - title
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        category_id:
+          type: integer
+        image:
+          type: string
+        recipe_text:
+          type: string
+        author_id:
+          type: integer
+      example:
+        image: image
+        category_id: 6
+        recipe_text: recipe_text
+        id: 0
+        title: title
+        author_id: 1
+    Recipes:
+      type: array
+      items:
+        $ref: '#/components/schemas/Recipe'
+    Like:
+      required:
+      - recipe_id
+      - user_id
+      type: object
+      properties:
+        id:
+          type: integer
+        recipe_id:
+          type: integer
+        user_id:
+          type: integer
+      example:
+        id: 0
+        recipe_id: 0
+        user_id: 6
+    Likes:
+      type: array
+      items:
+        $ref: '#/components/schemas/Like'
+

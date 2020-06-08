@@ -4,9 +4,9 @@ from flask_login import login_user, logout_user, current_user
 import os
 import random
 import string
-from logic.UserLogic import UserLogic
-from logic.RecipeLogic import RecipeLogic
-from logic.CategoryLogic import CategoryLogic
+from logic.backend.UserLogic import UserLogic
+from logic.backend.RecipeLogic import RecipeLogic
+from logic.backend.CategoryLogic import CategoryLogic
 
 class LikeFood:
 
@@ -116,10 +116,14 @@ class LikeFood:
         return self.category_logic.get_categories()
 
     def change_password(self, login, new_password):
-        self.user_logic.change_password(self.user_logic.find_by_login(login), new_password)
+
+        self.user_logic.change_password(self.user_logic.find_by_login(current_user.login), new_password)
 
     def current_user_role(self):
         return current_user.role
+
+    def current_user_id(self):
+        return current_user.id
 
     def current_user_is_authenticated(self):
         return current_user.is_authenticated

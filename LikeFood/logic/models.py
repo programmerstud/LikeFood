@@ -1,6 +1,6 @@
 from flask_login import UserMixin
-
-from logic import db, manager
+from logic import db, manager, ma
+from marshmallow import fields
 
 user_like_recipe = db.Table('user_like_recipe',
                  db.Column('recipe_id', db.Integer, db.ForeignKey('recipe.id'), primary_key=True),
@@ -35,3 +35,24 @@ class Category(db.Model):
 @manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+class UserSchema(ma.ModelSchema):
+    class Meta:
+        model = User
+    like = fields.Nested("LikeSchema", default=[], many=True)
+
+class RecipeSchema(ma.ModelSchema):
+    class Meta:
+        model = Recipe
+    like = fields.Nested("LikeSchema", default=[], many=True)
+
+class CategorySchema(ma.ModelSchema):
+    class Meta:
+        model = Category
+
+class LikeSchema():
+    def __init__(self, **kwargs):
+        super().__init__(strict=True, **kwargs)
+    recipe_id = fields.Int()
+    user_id = fields.Int()
+
