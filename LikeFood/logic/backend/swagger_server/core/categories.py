@@ -1,7 +1,7 @@
 import json
 import os
 from logic import db, ma
-from logic.backend.models import Category, CategorySchema
+from logic.models import CategorySchema
 from logic.backend.CategoryLogic import CategoryLogic
 
 def get_all_categories():

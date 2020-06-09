@@ -1,6 +1,6 @@
 import json
 import os
-from logic.backend.models import User, UserSchema
+from logic.models import User, UserSchema
 from logic.backend.UserLogic import UserLogic
 from logic import db, ma
 

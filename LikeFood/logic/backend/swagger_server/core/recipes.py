@@ -1,6 +1,6 @@
 import json
 import os
-from logic.backend.models import Recipe, RecipeSchema
+from logic.models import RecipeSchema
 from logic.backend.RecipeLogic import RecipeLogic
 from logic import db, ma
 

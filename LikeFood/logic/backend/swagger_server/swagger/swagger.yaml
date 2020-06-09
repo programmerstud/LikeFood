@@ -27,7 +27,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Recipes'
       x-openapi-router-controller: swagger_server.controllers.LikeFood
-  /recipe/{author_id}:
+  /recipes/author_id={author_id}:
     get:
       tags:
       - Рецепт
@@ -52,7 +52,7 @@ paths:
         "404":
           description: Пользователь не найден
       x-openapi-router-controller: swagger_server.controllers.LikeFood
-  /recipe/{category_id}:
+  /recipes/category_id={category_id}:
     get:
       tags:
       - Рецепт
@@ -76,7 +76,7 @@ paths:
         "404":
           description: Категория не найдена
       x-openapi-router-controller: swagger_server.controllers.LikeFood
-  /recipe/{title}:
+  /recipes/title={title}:
     get:
       tags:
       - Рецепт
@@ -100,7 +100,7 @@ paths:
         "404":
           description: Рецепты с таким названием не найдены
       x-openapi-router-controller: swagger_server.controllers.LikeFood
-  /recipe/{id}:
+  /recipe/id={id}:
     get:
       tags:
       - Рецепт
@@ -181,7 +181,7 @@ paths:
                 $ref: '#/components/schemas/Likes'
                 x-content-type: application/json
       x-openapi-router-controller: swagger_server.controllers.LikeFood
-  /like/{user_id}:
+  /likes/user_id={user_id}:
     get:
       tags:
       - Оценка
@@ -207,7 +207,7 @@ paths:
         "404":
           description: Пользователь не найден
       x-openapi-router-controller: swagger_server.controllers.LikeFood
-  /like/{recipe_id}:
+  /likes/recipe_id={recipe_id}:
     get:
       tags:
       - Оценка
