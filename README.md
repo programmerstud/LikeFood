@@ -11,7 +11,8 @@
 ## Навигация по документации
 [Техническое задание](https://github.com/programmerstud/LikeFood/blob/master/Documents/Техническое%20задание.pdf) <br>
 [Курсовой проект](https://github.com/programmerstud/LikeFood/blob/master/Documents/Курсовой%20проект.pdf) <br>
-[Отчет по ролям](https://github.com/programmerstud/LikeFood/blob/master/Documents/Отчет%20по%20ролям.pdf) <br>
+[Отчет по ролям ко 2 аттестации](https://github.com/programmerstud/LikeFood/blob/master/Documents/Отчет%20по%20ролям.pdf) <br>
+[Финальный отчет о проделанной работе](https://github.com/programmerstud/LikeFood/blob/master/Documents/Финальный%20отчет%20по%20ролям.pdf) <br> 
 [Диаграммы](https://github.com/programmerstud/LikeFood/tree/master/Documents/Диаграммы) <br>
 
 
@@ -21,3 +22,4 @@
 [Swagger](https://app.swaggerhub.com/apis-docs/MarinaVereshhagina/LikeFood/1.0.0)<br>
 [Trello Board](https://trello.com/b/2sgQHScX/likefood) <br>
 [Miro](https://miro.com/app/board/o9J_kvU0_Lk=/) <br>
+[Демо-видео](https://youtu.be/37ej596RovE) <br>
