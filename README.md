@@ -14,6 +14,7 @@
 [Отчет по ролям ко 2 аттестации](https://github.com/programmerstud/LikeFood/blob/master/Documents/Отчет%20по%20ролям.pdf) <br>
 [Финальный отчет о проделанной работе](https://github.com/programmerstud/LikeFood/blob/master/Documents/Финальный%20отчет%20по%20ролям.pdf) <br> 
 [Диаграммы](https://github.com/programmerstud/LikeFood/tree/master/Documents/Диаграммы) <br>
+[Презентация](https://github.com/programmerstud/LikeFood/tree/master/Documents/LikeFood.pdf) <br>
 
 
 ## Ссылки
