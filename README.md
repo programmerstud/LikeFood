@@ -4,9 +4,9 @@
 Веб-приложение, предназначенное для формирования базы данных диетических рецептов от авторов с возможность пользовательской оценки для построения рейтинга рецептов, на основании которого строится рейтинг авторов.
 
 ## Участники
-- programmerstud - Верещагина Марина, 3 группа
-- LizaOleynik - Олейник Елизавета, 3 группа
-- vladimir-zheltukhin - Желтухин Владимир, 3 группа
+- programmerstud - Верещагина Марина, 3 группа - vereshaginamari99@gmail.com
+- LizaOleynik - Олейник Елизавета, 3 группа - olliezyan1i9k99@gmail.com
+- vladimir-zheltukhin - Желтухин Владимир, 3 группа - vova.zheltukhin@yandex.ru
 
 ## Навигация по документации
 [Техническое задание](https://github.com/programmerstud/LikeFood/blob/master/Documents/Техническое%20задание.pdf) <br>
@@ -24,3 +24,4 @@
 [Trello Board](https://trello.com/b/2sgQHScX/likefood) <br>
 [Miro](https://miro.com/app/board/o9J_kvU0_Lk=/) <br>
 [Демо-видео](https://youtu.be/37ej596RovE) <br>
+[Выступление](https://youtu.be/Jxd0kgSXScA) <br>
